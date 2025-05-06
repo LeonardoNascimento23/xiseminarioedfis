@@ -34,7 +34,7 @@ const NewsEditor: React.FC = () => {
     try {
       await deleteNews(id);
       if (selectedNews?.id === id) {
-        setSelectedNews(null);
+      setSelectedNews(null);
       }
     } catch (error) {
       console.error('Error deleting news:', error);
@@ -279,7 +279,7 @@ const NewsEditor: React.FC = () => {
               </div>
             ) : (
               <div className="bg-white p-6 rounded-lg shadow text-center text-gray-500">
-                Selecione uma notícia para editar ou crie uma nova
+                  Selecione uma notícia para editar ou crie uma nova
               </div>
             )}
           </div>
