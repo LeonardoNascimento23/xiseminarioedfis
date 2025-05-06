@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from '../../components/layout/Layout';
 import { supabase } from '../../lib/supabase';
 import Button from '../../components/ui/Button';
 import { Plus, Save, Trash2 } from 'lucide-react';
+import SpeakerSelector from '../../components/admin/SpeakerSelector';
+import { Speaker } from '../../hooks/useSupabase';
 
 interface Lecture {
   id: string;
   title: string;
-  speaker: string;
-  speaker_bio: string;
   description: string;
   date: string;
   time: string;
@@ -18,6 +18,7 @@ interface Lecture {
   current_participants: number;
   learning_points: string[];
   published: boolean;
+  speakers: Speaker[];
 }
 
 const LectureEditor: React.FC = () => {
@@ -25,15 +26,11 @@ const LectureEditor: React.FC = () => {
   const [selectedLecture, setSelectedLecture] = useState<Lecture | null>(null);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetchLectures();
-  }, []);
-
   const fetchLectures = async () => {
     try {
       const { data, error } = await supabase
         .from('lectures')
-        .select('*')
+        .select('*, lecture_speakers(speaker:speakers(*))')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -48,14 +45,39 @@ const LectureEditor: React.FC = () => {
 
     setSaving(true);
     try {
-      const { error } = await supabase
+      const { speakers, ...lectureData } = selectedLecture;
+      const { data, error } = await supabase
         .from('lectures')
         .upsert({
-          ...selectedLecture,
+          ...lectureData,
           updated_at: new Date().toISOString()
-        });
+        })
+        .select();
 
       if (error) throw error;
+
+      // Atualizar palestrantes
+      if (data && data[0]) {
+        const lectureId = data[0].id;
+        // Remover palestrantes existentes
+        await supabase
+          .from('lecture_speakers')
+          .delete()
+          .eq('lecture_id', lectureId);
+
+        // Adicionar novos palestrantes
+        if (speakers.length > 0) {
+          const speakerRelations = speakers.map((speaker) => ({
+            lecture_id: lectureId,
+            speaker_id: speaker.id
+          }));
+
+          await supabase
+            .from('lecture_speakers')
+            .insert(speakerRelations);
+        }
+      }
+
       await fetchLectures();
     } catch (error) {
       console.error('Error saving lecture:', error);
@@ -85,8 +107,6 @@ const LectureEditor: React.FC = () => {
     const newLecture: Lecture = {
       id: '',
       title: 'Nova Palestra',
-      speaker: '',
-      speaker_bio: '',
       description: '',
       date: new Date().toISOString().split('T')[0],
       time: '19:00',
@@ -95,7 +115,8 @@ const LectureEditor: React.FC = () => {
       max_participants: 0,
       current_participants: 0,
       learning_points: [],
-      published: false
+      published: false,
+      speakers: []
     };
     setSelectedLecture(newLecture);
   };
@@ -174,59 +195,15 @@ const LectureEditor: React.FC = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Palestrante
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedLecture.speaker}
-                      onChange={(e) =>
-                        setSelectedLecture({ ...selectedLecture, speaker: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      URL da Imagem
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedLecture.image_url}
-                      onChange={(e) =>
-                        setSelectedLecture({ ...selectedLecture, image_url: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Biografia do Palestrante
+                      Palestrantes
                     </label>
-                    <textarea
-                      value={selectedLecture.speaker_bio}
-                      onChange={(e) =>
-                        setSelectedLecture({ ...selectedLecture, speaker_bio: e.target.value })
+                    <SpeakerSelector
+                      selectedSpeakers={selectedLecture.speakers}
+                      onChange={(speakers) =>
+                        setSelectedLecture({ ...selectedLecture, speakers })
                       }
-                      rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Descrição
-                    </label>
-                    <textarea
-                      value={selectedLecture.description}
-                      onChange={(e) =>
-                        setSelectedLecture({ ...selectedLecture, description: e.target.value })
-                      }
-                      rows={6}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -274,6 +251,20 @@ const LectureEditor: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
+                      URL da Imagem
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedLecture.image_url}
+                      onChange={(e) =>
+                        setSelectedLecture({ ...selectedLecture, image_url: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Número Máximo de Participantes
                     </label>
                     <input
@@ -285,6 +276,23 @@ const LectureEditor: React.FC = () => {
                           max_participants: parseInt(e.target.value)
                         })
                       }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Descrição
+                    </label>
+                    <textarea
+                      value={selectedLecture.description}
+                      onChange={(e) =>
+                        setSelectedLecture({
+                          ...selectedLecture,
+                          description: e.target.value
+                        })
+                      }
+                      rows={4}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout/Layout';
 import Button from '../../components/ui/Button';
-import { Plus, Save, Trash2 } from 'lucide-react';
+import { Plus, Save, Trash2, Eye } from 'lucide-react';
 import { useNews, News } from '../../hooks/useSupabase';
+import NewsPreview from '../../components/admin/NewsPreview';
 
 const NewsEditor: React.FC = () => {
   const { news, loading, error, createNews, updateNews, deleteNews } = useNews();
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
   const [saving, setSaving] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleSave = async () => {
     if (!selectedNews) return;
@@ -34,7 +36,7 @@ const NewsEditor: React.FC = () => {
     try {
       await deleteNews(id);
       if (selectedNews?.id === id) {
-      setSelectedNews(null);
+        setSelectedNews(null);
       }
     } catch (error) {
       console.error('Error deleting news:', error);
@@ -96,14 +98,23 @@ const NewsEditor: React.FC = () => {
               Nova Notícia
             </Button>
             {selectedNews && (
-              <Button
-                variant="primary"
-                onClick={handleSave}
-                isLoading={saving}
-                leftIcon={<Save size={16} />}
-              >
-                Salvar
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowPreview(!showPreview)}
+                  leftIcon={<Eye size={16} />}
+                >
+                  {showPreview ? 'Editar' : 'Visualizar'}
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleSave}
+                  isLoading={saving}
+                  leftIcon={<Save size={16} />}
+                >
+                  Salvar
+                </Button>
+              </>
             )}
           </div>
         </div>
@@ -140,146 +151,150 @@ const NewsEditor: React.FC = () => {
 
           <div className="md:col-span-3">
             {selectedNews ? (
-              <div className="bg-white p-6 rounded-lg shadow">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Título
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedNews.title}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, title: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Autor
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedNews.author}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, author: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Categoria
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedNews.category}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, category: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Data
-                    </label>
-                    <input
-                      type="date"
-                      value={selectedNews.date}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, date: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      URL da Imagem
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedNews.image_url}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, image_url: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Tags (separadas por vírgula)
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedNews.tags.join(', ')}
-                      onChange={(e) =>
-                        setSelectedNews({
-                          ...selectedNews,
-                          tags: e.target.value.split(',').map((tag) => tag.trim())
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Resumo
-                    </label>
-                    <textarea
-                      value={selectedNews.summary}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, summary: e.target.value })
-                      }
-                      rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Conteúdo
-                    </label>
-                    <textarea
-                      value={selectedNews.content}
-                      onChange={(e) =>
-                        setSelectedNews({ ...selectedNews, content: e.target.value })
-                      }
-                      rows={10}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="flex items-center space-x-2">
+              showPreview ? (
+                <NewsPreview news={selectedNews} />
+              ) : (
+                <div className="bg-white p-6 rounded-lg shadow">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Título
+                      </label>
                       <input
-                        type="checkbox"
-                        checked={selectedNews.published}
+                        type="text"
+                        value={selectedNews.title}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, title: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Autor
+                      </label>
+                      <input
+                        type="text"
+                        value={selectedNews.author}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, author: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Categoria
+                      </label>
+                      <input
+                        type="text"
+                        value={selectedNews.category}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, category: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Data
+                      </label>
+                      <input
+                        type="date"
+                        value={selectedNews.date}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, date: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        URL da Imagem
+                      </label>
+                      <input
+                        type="text"
+                        value={selectedNews.image_url}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, image_url: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Resumo
+                      </label>
+                      <textarea
+                        value={selectedNews.summary}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, summary: e.target.value })
+                        }
+                        rows={3}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Conteúdo
+                      </label>
+                      <textarea
+                        value={selectedNews.content}
+                        onChange={(e) =>
+                          setSelectedNews({ ...selectedNews, content: e.target.value })
+                        }
+                        rows={10}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Tags (separadas por vírgula)
+                      </label>
+                      <input
+                        type="text"
+                        value={selectedNews.tags.join(', ')}
                         onChange={(e) =>
                           setSelectedNews({
                             ...selectedNews,
-                            published: e.target.checked
+                            tags: e.target.value.split(',').map((tag) => tag.trim())
                           })
                         }
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       />
-                      <span className="text-sm font-medium text-gray-700">
-                        Publicar notícia
-                      </span>
-                    </label>
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedNews.published}
+                          onChange={(e) =>
+                            setSelectedNews({
+                              ...selectedNews,
+                              published: e.target.checked
+                            })
+                          }
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm text-gray-700">Publicado</span>
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )
             ) : (
-              <div className="bg-white p-6 rounded-lg shadow text-center text-gray-500">
+              <div className="bg-white p-6 rounded-lg shadow text-center">
+                <p className="text-gray-500">
                   Selecione uma notícia para editar ou crie uma nova
+                </p>
               </div>
             )}
           </div>

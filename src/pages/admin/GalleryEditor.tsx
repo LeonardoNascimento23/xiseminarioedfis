@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import Layout from '../../components/layout/Layout';
 import Button from '../../components/ui/Button';
 import { Plus, Save, Trash2, Upload } from 'lucide-react';
-import { useGallery } from '../../hooks/useSupabase';
+import { useGallery, GalleryImage } from '../../hooks/useSupabase';
+
+interface SelectedImage {
+  id: string;
+  description: string;
+  category: string;
+}
 
 const GalleryEditor: React.FC = () => {
-  const { images, loading, error, uploadImage, deleteImage, refreshImages } = useGallery();
-  const [selectedImage, setSelectedImage] = useState<{ id: string; description: string; category: string } | null>(null);
+  const { images, loading, error, uploadImage, deleteImage } = useGallery();
+  const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null);
   const [saving, setSaving] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
@@ -19,7 +25,7 @@ const GalleryEditor: React.FC = () => {
       setSelectedImage(null);
       setFile(null);
     } catch (error) {
-      console.error('Error saving image:', error);
+      console.error('Erro ao salvar:', error);
       alert('Erro ao salvar imagem. Por favor, tente novamente.');
     } finally {
       setSaving(false);
@@ -35,7 +41,7 @@ const GalleryEditor: React.FC = () => {
         setSelectedImage(null);
       }
     } catch (error) {
-      console.error('Error deleting image:', error);
+      console.error('Erro ao deletar:', error);
       alert('Erro ao excluir imagem. Por favor, tente novamente.');
     }
   };
@@ -48,9 +54,21 @@ const GalleryEditor: React.FC = () => {
     });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+    }
+  };
+
+  const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (selectedImage) {
+      setSelectedImage({ ...selectedImage, description: e.target.value });
+    }
+  };
+
+  const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (selectedImage) {
+      setSelectedImage({ ...selectedImage, category: e.target.value });
     }
   };
 
@@ -109,7 +127,7 @@ const GalleryEditor: React.FC = () => {
           <div className="md:col-span-1 bg-white p-4 rounded-lg shadow">
             <h2 className="font-semibold text-gray-900 mb-4">Imagens</h2>
             <ul className="space-y-2">
-              {images.map((image) => (
+              {images.map((image: GalleryImage) => (
                 <li key={image.id} className="flex items-center justify-between">
                   <button
                     className={`flex-grow text-left px-3 py-2 rounded-md text-sm ${
@@ -183,9 +201,7 @@ const GalleryEditor: React.FC = () => {
                     <input
                       type="text"
                       value={selectedImage.description}
-                      onChange={(e) =>
-                        setSelectedImage({ ...selectedImage, description: e.target.value })
-                      }
+                      onChange={handleDescriptionChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
@@ -197,9 +213,7 @@ const GalleryEditor: React.FC = () => {
                     <input
                       type="text"
                       value={selectedImage.category}
-                      onChange={(e) =>
-                        setSelectedImage({ ...selectedImage, category: e.target.value })
-                      }
+                      onChange={handleCategoryChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>

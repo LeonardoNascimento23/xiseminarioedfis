@@ -64,3 +64,49 @@ export interface NewsArticle {
   tags?: string[];
   relatedArticles?: string[];
 }
+
+export interface Speaker {
+  id: string;
+  name: string;
+  bio?: string;
+  imageUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Album {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GalleryImage {
+  id: string;
+  url: string;
+  description?: string;
+  category?: string;
+  albumId?: string;
+  tags: string[];
+  createdAt: string;
+}
+
+export interface AdminLog {
+  id: string;
+  userId: string;
+  action: string;
+  tableName: string;
+  recordId: string;
+  details: any;
+  createdAt: string;
+}
+
+export interface Backup {
+  id: string;
+  filePath: string;
+  sizeBytes: number;
+  createdAt: string;
+  status: 'pending' | 'completed' | 'failed';
+  completedAt?: string;
+}

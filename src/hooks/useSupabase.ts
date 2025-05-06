@@ -41,6 +41,35 @@ export interface GalleryImage {
   created_at: string;
 }
 
+export interface Speaker {
+  id: string;
+  name: string;
+  bio: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Album {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminLog {
+  id: string;
+  action: string;
+  userId: string;
+  createdAt: string;
+}
+
+export interface Backup {
+  id: string;
+  createdAt: string;
+}
+
 export function useNews() {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
@@ -326,5 +355,252 @@ export function useGallery() {
     uploadImage,
     deleteImage,
     refreshImages: fetchImages
+  };
+}
+
+export function useSpeakers() {
+  const [speakers, setSpeakers] = useState<Speaker[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchSpeakers();
+  }, []);
+
+  const fetchSpeakers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('speakers')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      setSpeakers(data || []);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao carregar palestrantes');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createSpeaker = async (speakerData: Omit<Speaker, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('speakers')
+        .insert([speakerData])
+        .select();
+
+      if (error) throw error;
+      await fetchSpeakers();
+      return data[0];
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const updateSpeaker = async (id: string, speakerData: Partial<Speaker>) => {
+    try {
+      const { error } = await supabase
+        .from('speakers')
+        .update(speakerData)
+        .eq('id', id);
+
+      if (error) throw error;
+      await fetchSpeakers();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const deleteSpeaker = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('speakers')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      await fetchSpeakers();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return {
+    speakers,
+    loading,
+    error,
+    createSpeaker,
+    updateSpeaker,
+    deleteSpeaker,
+    refreshSpeakers: fetchSpeakers
+  };
+}
+
+export function useAlbums() {
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchAlbums();
+  }, []);
+
+  const fetchAlbums = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('albums')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      setAlbums(data || []);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao carregar álbuns');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createAlbum = async (albumData: Omit<Album, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('albums')
+        .insert([albumData])
+        .select();
+
+      if (error) throw error;
+      await fetchAlbums();
+      return data[0];
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const updateAlbum = async (id: string, albumData: Partial<Album>) => {
+    try {
+      const { error } = await supabase
+        .from('albums')
+        .update(albumData)
+        .eq('id', id);
+
+      if (error) throw error;
+      await fetchAlbums();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const deleteAlbum = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('albums')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      await fetchAlbums();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return {
+    albums,
+    loading,
+    error,
+    createAlbum,
+    updateAlbum,
+    deleteAlbum,
+    refreshAlbums: fetchAlbums
+  };
+}
+
+export function useAdminLogs() {
+  const [logs, setLogs] = useState<AdminLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchLogs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('admin_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (error) throw error;
+      setLogs(data || []);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao carregar logs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    logs,
+    loading,
+    error,
+    refreshLogs: fetchLogs
+  };
+}
+
+export function useBackups() {
+  const [backups, setBackups] = useState<Backup[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchBackups = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('backups')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBackups(data || []);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao carregar backups');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createBackup = async () => {
+    try {
+      const { data, error } = await supabase
+        .functions
+        .invoke('create-backup');
+
+      if (error) throw error;
+      await fetchBackups();
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const restoreBackup = async (backupId: string) => {
+    try {
+      const { error } = await supabase
+        .functions
+        .invoke('restore-backup', {
+          body: { backupId }
+        });
+
+      if (error) throw error;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return {
+    backups,
+    loading,
+    error,
+    createBackup,
+    restoreBackup,
+    refreshBackups: fetchBackups
   };
 } 
