@@ -1,56 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from '../../components/layout/Layout';
-import { supabase } from '../../lib/supabase';
 import Button from '../../components/ui/Button';
-import { Plus, Save, Trash2 } from 'lucide-react';
-
-interface GalleryItem {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  published: boolean;
-}
+import { Plus, Save, Trash2, Upload } from 'lucide-react';
+import { useGallery } from '../../hooks/useSupabase';
 
 const GalleryEditor: React.FC = () => {
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const { images, loading, error, uploadImage, deleteImage, refreshImages } = useGallery();
+  const [selectedImage, setSelectedImage] = useState<{ id: string; description: string; category: string } | null>(null);
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    fetchGalleryItems();
-  }, []);
-
-  const fetchGalleryItems = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('gallery')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setGalleryItems(data || []);
-    } catch (error) {
-      console.error('Error fetching gallery items:', error);
-    }
-  };
+  const [file, setFile] = useState<File | null>(null);
 
   const handleSave = async () => {
-    if (!selectedItem) return;
+    if (!selectedImage || !file) return;
 
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('gallery')
-        .upsert({
-          ...selectedItem,
-          updated_at: new Date().toISOString()
-        });
-
-      if (error) throw error;
-      await fetchGalleryItems();
+      await uploadImage(file, selectedImage.description, selectedImage.category);
+      setSelectedImage(null);
+      setFile(null);
     } catch (error) {
-      console.error('Error saving gallery item:', error);
+      console.error('Error saving image:', error);
+      alert('Erro ao salvar imagem. Por favor, tente novamente.');
     } finally {
       setSaving(false);
     }
@@ -60,29 +30,54 @@ const GalleryEditor: React.FC = () => {
     if (!confirm('Tem certeza que deseja excluir esta imagem?')) return;
 
     try {
-      const { error } = await supabase
-        .from('gallery')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-      await fetchGalleryItems();
-      setSelectedItem(null);
+      await deleteImage(id);
+      if (selectedImage?.id === id) {
+        setSelectedImage(null);
+      }
     } catch (error) {
-      console.error('Error deleting gallery item:', error);
+      console.error('Error deleting image:', error);
+      alert('Erro ao excluir imagem. Por favor, tente novamente.');
     }
   };
 
-  const createNewItem = () => {
-    const newItem: GalleryItem = {
+  const createNewImage = () => {
+    setSelectedImage({
       id: '',
-      title: 'Nova Imagem',
       description: '',
-      image_url: '',
-      published: false
-    };
-    setSelectedItem(newItem);
+      category: ''
+    });
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Carregando imagens...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center text-red-600">
+            <p>Erro ao carregar imagens: {error}</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -92,12 +87,12 @@ const GalleryEditor: React.FC = () => {
           <div className="space-x-4">
             <Button
               variant="outline"
-              onClick={createNewItem}
+              onClick={createNewImage}
               leftIcon={<Plus size={16} />}
             >
               Nova Imagem
             </Button>
-            {selectedItem && (
+            {selectedImage && (
               <Button
                 variant="primary"
                 onClick={handleSave}
@@ -110,27 +105,28 @@ const GalleryEditor: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1 bg-white p-4 rounded-lg shadow">
             <h2 className="font-semibold text-gray-900 mb-4">Imagens</h2>
             <ul className="space-y-2">
-              {galleryItems.map((item) => (
-                <li key={item.id} className="flex items-center justify-between">
+              {images.map((image) => (
+                <li key={image.id} className="flex items-center justify-between">
                   <button
                     className={`flex-grow text-left px-3 py-2 rounded-md text-sm ${
-                      selectedItem?.id === item.id
+                      selectedImage?.id === image.id
                         ? 'bg-blue-50 text-blue-700'
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
-                    onClick={() => setSelectedItem(item)}
+                    onClick={() => setSelectedImage({
+                      id: image.id,
+                      description: image.description,
+                      category: image.category
+                    })}
                   >
-                    {item.title}
-                    {!item.published && (
-                      <span className="ml-2 text-xs text-gray-500">(Rascunho)</span>
-                    )}
+                    {image.description || 'Imagem sem descrição'}
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(image.id)}
                     className="ml-2 p-1 text-gray-400 hover:text-red-600"
                   >
                     <Trash2 size={16} />
@@ -140,80 +136,72 @@ const GalleryEditor: React.FC = () => {
             </ul>
           </div>
 
-          <div className="md:col-span-3">
-            {selectedItem ? (
+          <div className="md:col-span-2">
+            {selectedImage ? (
               <div className="bg-white p-6 rounded-lg shadow">
                 <div className="grid grid-cols-1 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Título
+                      Arquivo da Imagem
                     </label>
-                    <input
-                      type="text"
-                      value={selectedItem.title}
-                      onChange={(e) =>
-                        setSelectedItem({ ...selectedItem, title: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      URL da Imagem
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedItem.image_url}
-                      onChange={(e) =>
-                        setSelectedItem({ ...selectedItem, image_url: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  {selectedItem.image_url && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Prévia
-                      </label>
-                      <img
-                        src={selectedItem.image_url}
-                        alt={selectedItem.title}
-                        className="w-full h-64 object-cover rounded-lg"
-                      />
+                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                      <div className="space-y-1 text-center">
+                        <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                        <div className="flex text-sm text-gray-600">
+                          <label
+                            htmlFor="file-upload"
+                            className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                          >
+                            <span>Upload de arquivo</span>
+                            <input
+                              id="file-upload"
+                              name="file-upload"
+                              type="file"
+                              className="sr-only"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                            />
+                          </label>
+                          <p className="pl-1">ou arraste e solte</p>
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG, GIF até 10MB
+                        </p>
+                      </div>
                     </div>
-                  )}
+                    {file && (
+                      <p className="mt-2 text-sm text-gray-500">
+                        Arquivo selecionado: {file.name}
+                      </p>
+                    )}
+                  </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Descrição
                     </label>
-                    <textarea
-                      value={selectedItem.description}
+                    <input
+                      type="text"
+                      value={selectedImage.description}
                       onChange={(e) =>
-                        setSelectedItem({ ...selectedItem, description: e.target.value })
+                        setSelectedImage({ ...selectedImage, description: e.target.value })
                       }
-                      rows={4}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedItem.published}
-                        onChange={(e) =>
-                          setSelectedItem({
-                            ...selectedItem,
-                            published: e.target.checked
-                          })
-                        }
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="ml-2 text-sm text-gray-700">Publicado</span>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Categoria
                     </label>
+                    <input
+                      type="text"
+                      value={selectedImage.category}
+                      onChange={(e) =>
+                        setSelectedImage({ ...selectedImage, category: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
                   </div>
                 </div>
               </div>
