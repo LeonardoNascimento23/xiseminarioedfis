@@ -226,21 +226,40 @@ export function useGallery() {
 
   const uploadImage = async (file: File, description: string, category: string) => {
     try {
+      // Verifica se o arquivo é uma imagem
+      if (!file.type.startsWith('image/')) {
+        throw new Error('O arquivo deve ser uma imagem');
+      }
+
+      // Verifica o tamanho do arquivo (máximo 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error('O arquivo deve ter no máximo 10MB');
+      }
+
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `gallery/${fileName}`;
 
+      // Upload do arquivo para o storage
       const { error: uploadError } = await supabase.storage
         .from('images')
-        .upload(filePath, file);
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Erro no upload:', uploadError);
+        throw new Error('Erro ao fazer upload da imagem');
+      }
 
+      // Obtém a URL pública da imagem
       const { data: { publicUrl } } = supabase.storage
         .from('images')
         .getPublicUrl(filePath);
 
-      const { data, error } = await supabase
+      // Insere o registro na tabela gallery
+      const { data, error: insertError } = await supabase
         .from('gallery')
         .insert([{
           url: publicUrl,
@@ -249,24 +268,53 @@ export function useGallery() {
         }])
         .select();
 
-      if (error) throw error;
+      if (insertError) {
+        console.error('Erro ao inserir:', insertError);
+        throw new Error('Erro ao salvar os dados da imagem');
+      }
+
       await fetchImages();
       return data[0];
     } catch (error) {
+      console.error('Erro completo:', error);
       throw error;
     }
   };
 
   const deleteImage = async (id: string) => {
     try {
-      const { error } = await supabase
+      // Primeiro, obtém a URL da imagem
+      const { data: image, error: fetchError } = await supabase
+        .from('gallery')
+        .select('url')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Extrai o caminho do arquivo da URL
+      const filePath = image.url.split('/').pop();
+      if (!filePath) throw new Error('URL da imagem inválida');
+
+      // Remove o arquivo do storage
+      const { error: deleteStorageError } = await supabase.storage
+        .from('images')
+        .remove([`gallery/${filePath}`]);
+
+      if (deleteStorageError) {
+        console.error('Erro ao deletar do storage:', deleteStorageError);
+      }
+
+      // Remove o registro da tabela
+      const { error: deleteError } = await supabase
         .from('gallery')
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
+      if (deleteError) throw deleteError;
       await fetchImages();
     } catch (error) {
+      console.error('Erro ao deletar:', error);
       throw error;
     }
   };

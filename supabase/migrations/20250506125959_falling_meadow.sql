@@ -35,12 +35,10 @@
 
     - `gallery`
       - `id` (uuid, primary key)
-      - `title` (text)
+      - `url` (text)
       - `description` (text)
-      - `image_url` (text)
+      - `category` (text)
       - `created_at` (timestamp)
-      - `updated_at` (timestamp)
-      - `published` (boolean)
 
   2. Security
     - Enable RLS on all tables
@@ -112,20 +110,18 @@ CREATE POLICY "Admins can manage news"
 -- Gallery table
 CREATE TABLE IF NOT EXISTS gallery (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  title text NOT NULL,
+  url text NOT NULL,
   description text,
-  image_url text NOT NULL,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now(),
-  published boolean DEFAULT false
+  category text,
+  created_at timestamptz DEFAULT now()
 );
 
 ALTER TABLE gallery ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Public can view published gallery items"
+CREATE POLICY "Public can view gallery items"
   ON gallery
   FOR SELECT
-  USING (published = true);
+  USING (true);
 
 CREATE POLICY "Admins can manage gallery"
   ON gallery
