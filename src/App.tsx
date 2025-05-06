@@ -9,7 +9,6 @@ import SchedulePage from './pages/SchedulePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AboutPage from './pages/AboutPage';
-import ContentEditor from './pages/admin/ContentEditor';
 import LectureEditor from './pages/admin/LectureEditor';
 import NewsEditor from './pages/admin/NewsEditor';
 import GalleryEditor from './pages/admin/GalleryEditor';
@@ -34,7 +33,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registrar" element={<RegisterPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/content" element={<ContentEditor />} />
           <Route path="/admin/lectures" element={<LectureEditor />} />
           <Route path="/admin/news" element={<NewsEditor />} />
           <Route path="/admin/gallery" element={<GalleryEditor />} />

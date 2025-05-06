@@ -62,7 +62,7 @@ const Header: React.FC = () => {
                 {isUserMenuOpen && (
                   <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5">
                     {isAdmin && (
-                      <Link to="/admin/content" className="block px-4 py-2 text-sm text-primary hover:bg-gray-50">
+                      <Link to="/admin" className="block px-4 py-2 text-sm text-primary hover:bg-gray-50">
                         Gerenciar Conteúdo
                       </Link>
                     )}
@@ -128,7 +128,7 @@ const Header: React.FC = () => {
               {user ? (
                 <>
                   {isAdmin && (
-                    <Link to="/admin/content" className="block rounded-md py-2 px-3 text-base font-medium text-primary hover:bg-gray-50">
+                    <Link to="/admin" className="block rounded-md py-2 px-3 text-base font-medium text-primary hover:bg-gray-50">
                       Gerenciar Conteúdo
                     </Link>
                   )}

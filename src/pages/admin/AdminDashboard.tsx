@@ -1,16 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../../components/layout/Layout';
-import { FileText, Image, BookOpen, Newspaper } from 'lucide-react';
+import { Image, BookOpen, Newspaper } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
   const menuItems = [
-    {
-      title: 'Gerenciar Páginas',
-      description: 'Edite o conteúdo das páginas estáticas do site',
-      icon: FileText,
-      link: '/admin/content'
-    },
     {
       title: 'Gerenciar Palestras',
       description: 'Adicione, edite e remova palestras e workshops',
@@ -41,7 +35,7 @@ const AdminDashboard: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {menuItems.map((item) => (
             <Link
               key={item.title}
