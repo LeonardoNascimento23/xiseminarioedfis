@@ -253,65 +253,39 @@ export function useGallery() {
     }
   };
 
-  const uploadImage = async (file: File, description: string, category: string) => {
+  const uploadImage = async (url: string, description: string, category: string) => {
     try {
-      // Verifica se o arquivo é uma imagem
-      if (!file.type.startsWith('image/')) {
-        throw new Error('O arquivo deve ser uma imagem');
-      }
+      setLoading(true);
+      setError(null);
 
-      // Verifica o tamanho do arquivo (máximo 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        throw new Error('O arquivo deve ter no máximo 10MB');
-      }
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `gallery/${fileName}`;
-
-      // Upload do arquivo para o storage
-      const { error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (uploadError) {
-        console.error('Erro no upload:', uploadError);
-        throw new Error('Erro ao fazer upload da imagem');
-      }
-
-      // Obtém a URL pública da imagem
-      const { data: { publicUrl } } = supabase.storage
-        .from('images')
-        .getPublicUrl(filePath);
-
-      // Insere o registro na tabela gallery
       const { data, error: insertError } = await supabase
         .from('gallery')
         .insert([{
-          url: publicUrl,
+          url,
           description,
           category
         }])
         .select();
 
       if (insertError) {
-        console.error('Erro ao inserir:', insertError);
         throw new Error('Erro ao salvar os dados da imagem');
       }
 
       await fetchImages();
       return data[0];
     } catch (error) {
-      console.error('Erro completo:', error);
+      setError(error instanceof Error ? error.message : 'Erro desconhecido');
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteImage = async (id: string) => {
     try {
+      setLoading(true);
+      setError(null);
+
       // Primeiro, obtém a URL da imagem
       const { data: image, error: fetchError } = await supabase
         .from('gallery')
@@ -343,8 +317,10 @@ export function useGallery() {
       if (deleteError) throw deleteError;
       await fetchImages();
     } catch (error) {
-      console.error('Erro ao deletar:', error);
+      setError(error instanceof Error ? error.message : 'Erro desconhecido');
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -603,4 +579,144 @@ export function useBackups() {
     restoreBackup,
     refreshBackups: fetchBackups
   };
-} 
+}
+
+export const useSupabase = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const uploadImage = async (file: File, path: string): Promise<string> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Verificar se o arquivo é uma imagem
+      if (!file.type.startsWith('image/')) {
+        throw new Error('O arquivo deve ser uma imagem');
+      }
+
+      // Gerar nome único para o arquivo
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${path}/${fileName}`;
+
+      // Upload do arquivo
+      const { data, error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        console.error('Erro no upload:', uploadError);
+        throw new Error('Erro ao fazer upload da imagem');
+      }
+
+      // Obter URL pública
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (err) {
+      console.error('Erro completo:', err);
+      setError(err instanceof Error ? err : new Error('Erro desconhecido'));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveNews = async (newsData: any) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data, error: saveError } = await supabase
+        .from('news')
+        .insert([newsData])
+        .select()
+        .single();
+
+      if (saveError) {
+        console.error('Erro ao salvar notícia:', saveError);
+        throw new Error('Erro ao salvar notícia');
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Erro completo:', err);
+      setError(err instanceof Error ? err : new Error('Erro desconhecido'));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveLecture = async (lectureData: any) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Validar dados obrigatórios
+      if (!lectureData.title || !lectureData.description || !lectureData.date) {
+        throw new Error('Dados obrigatórios não preenchidos');
+      }
+
+      const { data, error: saveError } = await supabase
+        .from('lectures')
+        .insert([lectureData])
+        .select()
+        .single();
+
+      if (saveError) {
+        console.error('Erro ao salvar palestra:', saveError);
+        throw new Error('Erro ao salvar palestra');
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Erro completo:', err);
+      setError(err instanceof Error ? err : new Error('Erro desconhecido'));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveSpeaker = async (speakerData: any) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data, error: saveError } = await supabase
+        .from('speakers')
+        .insert([speakerData])
+        .select()
+        .single();
+
+      if (saveError) {
+        console.error('Erro ao salvar palestrante:', saveError);
+        throw new Error('Erro ao salvar palestrante');
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Erro completo:', err);
+      setError(err instanceof Error ? err : new Error('Erro desconhecido'));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    loading,
+    error,
+    uploadImage,
+    saveNews,
+    saveLecture,
+    saveSpeaker
+  };
+}; 
