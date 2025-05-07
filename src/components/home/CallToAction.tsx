@@ -4,7 +4,7 @@ import Button from '../ui/Button';
 
 const CallToAction: React.FC = () => {
   return (
-    <section className="py-16 bg-gradient-to-r from-primary to-blue-600 text-white">
+    <section className="py-16 bg-gradient-to-r from-primary to-primary-dark text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="lg:w-3/5">
@@ -20,7 +20,7 @@ const CallToAction: React.FC = () => {
                 <Button 
                   variant="primary" 
                   size="lg" 
-                  className="bg-secondary hover:bg-secondary/90 focus:ring-secondary/50"
+                  className="bg-secondary hover:bg-secondary-dark focus:ring-secondary/50"
                 >
                   Inscreva-se Agora
                 </Button>
@@ -29,7 +29,7 @@ const CallToAction: React.FC = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  className="border-white text-white hover:bg-blue-700"
+                  className="border-white text-white hover:bg-primary-dark"
                 >
                   Ver Programação Completa
                 </Button>
@@ -37,7 +37,7 @@ const CallToAction: React.FC = () => {
             </div>
           </div>
           <div className="mt-10 lg:mt-0 lg:w-2/5 lg:pl-10">
-            <div className="bg-blue-700 bg-opacity-50 p-6 rounded-lg border border-blue-400">
+            <div className="bg-primary-dark bg-opacity-50 p-6 rounded-lg border border-blue-400">
               <h3 className="text-xl font-bold mb-4">Detalhes do Evento</h3>
               <ul className="space-y-3">
                 <li className="flex items-start">

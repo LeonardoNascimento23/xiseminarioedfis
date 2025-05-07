@@ -38,7 +38,7 @@ const Hero: React.FC = () => {
                     <Button 
                       variant="primary" 
                       size="lg" 
-                      className="bg-secondary hover:bg-secondary/90 focus:ring-secondary/50"
+                      className="bg-secondary hover:bg-secondary-dark focus:ring-secondary/50"
                       isFullWidth
                     >
                       Inscreva-se Agora
@@ -48,7 +48,7 @@ const Hero: React.FC = () => {
                     <Button 
                       variant="outline" 
                       size="lg"
-                      className="bg-transparent text-white border-white hover:bg-primary-700"
+                      className="bg-transparent text-white border-white hover:bg-primary-dark"
                       isFullWidth
                     >
                       Ver Programação
