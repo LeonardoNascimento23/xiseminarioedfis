@@ -260,12 +260,12 @@ export function useGallery() {
 
       const { data, error: insertError } = await supabase
         .from('gallery')
-        .insert([{
+        .insert({
           url,
           description,
           category
-        }])
-        .select();
+        })
+        .select('*');
 
       if (insertError) {
         throw new Error('Erro ao salvar os dados da imagem');
