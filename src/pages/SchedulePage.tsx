@@ -107,30 +107,35 @@ const SchedulePage: React.FC = () => {
 
           <div className="flex-1">
             <div className="space-y-8">
-              {scheduleByTime[selectedDate].map((event) => (
-                <div key={event.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                  <div className="flex items-center mb-4">
-                    <Clock className="h-5 w-5 text-primary mr-2" />
-                    <span className="text-gray-600">{event.startTime} - {event.endTime}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
-                  <p className="text-gray-600 mb-4">{event.description}</p>
-                  {event.speaker && (
-                    <div className="flex items-center text-gray-600">
-                      <User className="h-5 w-5 mr-2" />
-                      <span>{event.speaker}</span>
+              {sortedTimeBlocks.map((timeBlock) => (
+                <div key={timeBlock} className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">{timeBlock}</h3>
+                  {scheduleByTime[timeBlock].map((event) => (
+                    <div key={event.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                      <div className="flex items-center mb-4">
+                        <Clock className="h-5 w-5 text-primary mr-2" />
+                        <span className="text-gray-600">{event.startTime} - {event.endTime}</span>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
+                      <p className="text-gray-600 mb-4">{event.description}</p>
+                      {event.speaker && (
+                        <div className="flex items-center text-gray-600">
+                          <User className="h-5 w-5 mr-2" />
+                          <span>{event.speaker}</span>
+                        </div>
+                      )}
+                      {event.location && (
+                        <div className="flex items-center text-gray-600 mt-2">
+                          <MapPin className="h-5 w-5 mr-2" />
+                          <span>{event.location}</span>
+                        </div>
+                      )}
+                      <div className="mt-4 flex items-center">
+                        <div className={`h-2 w-24 rounded-full ${getStatusColor(event.status)}`}></div>
+                        <span className="ml-2 text-sm text-gray-500">{event.status}</span>
+                      </div>
                     </div>
-                  )}
-                  {event.location && (
-                    <div className="flex items-center text-gray-600 mt-2">
-                      <MapPin className="h-5 w-5 mr-2" />
-                      <span>{event.location}</span>
-                    </div>
-                  )}
-                  <div className="mt-4 flex items-center">
-                    <div className={`h-2 w-24 rounded-full ${getStatusColor(event.status)}`}></div>
-                    <span className="ml-2 text-sm text-gray-500">{event.status}</span>
-                  </div>
+                  ))}
                 </div>
               ))}
             </div>

@@ -44,12 +44,12 @@ const AboutPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="bg-primary py-16">
+      <div className="bg-primary-dark py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-white mb-4">
             {content?.title || 'Sobre o Seminário'}
           </h1>
-          <p className="text-gray-100 text-lg max-w-3xl mx-auto">
+          <p className="text-yellow-100 text-lg max-w-3xl mx-auto">
             Conheça mais sobre nossa missão, valores e história
           </p>
         </div>
@@ -66,7 +66,7 @@ const AboutPage: React.FC = () => {
               <ReactMarkdown>{content.content}</ReactMarkdown>
             ) : (
               <div className="text-center py-12">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-medium text-primary mb-2">
                   Conteúdo não encontrado
                 </h3>
                 <p className="text-gray-600">

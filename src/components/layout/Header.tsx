@@ -28,22 +28,22 @@ const Header: React.FC = () => {
               <img src="/images/LogoEdFisUFGD.png" alt="Logo" className="h-12 w-auto" />
             </Link>
             <nav className="hidden md:ml-8 md:flex md:space-x-8">
-              <Link to="/" className="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link to="/" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Início
               </Link>
-              <Link to="/inscricao" className="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link to="/inscricao" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Inscrição
               </Link>
-              <Link to="/programacao" className="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link to="/programacao" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Programação
               </Link>
-              <Link to="/noticias" className="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link to="/noticias" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Notícias
               </Link>
-              <Link to="/galeria" className="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link to="/galeria" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Fotos
               </Link>
-              <Link to="/comissao" className="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link to="/comissao" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Sobre
               </Link>
             </nav>
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
               <div className="relative">
                 <button
                   type="button"
-                  className="flex items-center max-w-xs text-sm rounded-full text-gray-700 focus:outline-none"
+                  className="flex items-center max-w-xs text-sm rounded-full text-primary focus:outline-none"
                   onClick={toggleUserMenu}
                 >
                   <span className="mr-2">Minha Conta</span>
@@ -75,10 +75,10 @@ const Header: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link to="/login">
-                  <Button variant="outline" size="sm">Entrar</Button>
+                  <Button variant="outline" size="sm" className="text-primary border-primary hover:bg-gray-50">Entrar</Button>
                 </Link>
                 <Link to="/registrar">
-                  <Button variant="primary" size="sm">Registrar</Button>
+                  <Button variant="secondary" size="sm">Registrar</Button>
                 </Link>
               </div>
             )}
@@ -86,7 +86,7 @@ const Header: React.FC = () => {
           <div className="flex md:hidden items-center">
             <button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+              className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-primary-dark hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
               onClick={toggleMenu}
             >
               <span className="sr-only">Abrir menu principal</span>
@@ -102,24 +102,24 @@ const Header: React.FC = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden">
+        <div className="md:hidden bg-white">
           <div className="pt-2 pb-3 space-y-1">
-            <Link to="/" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            <Link to="/" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Início
             </Link>
-            <Link to="/inscricao" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            <Link to="/inscricao" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Inscrição
             </Link>
-            <Link to="/programacao" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            <Link to="/programacao" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Programação
             </Link>
-            <Link to="/noticias" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            <Link to="/noticias" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Notícias
             </Link>
-            <Link to="/galeria" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            <Link to="/galeria" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Fotos
             </Link>
-            <Link to="/comissao" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            <Link to="/comissao" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Sobre
             </Link>
           </div>
@@ -128,21 +128,21 @@ const Header: React.FC = () => {
               {user ? (
                 <>
                   {isAdmin && (
-                    <Link to="/admin" className="block rounded-md py-2 px-3 text-base font-medium text-primary hover:bg-gray-50">
+                    <Link to="/admin" className="block rounded-md py-2 px-3 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
                       Gerenciar Conteúdo
                     </Link>
                   )}
-                  <Link to="/logout" className="block rounded-md py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-50">
+                  <Link to="/logout" className="block rounded-md py-2 px-3 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
                     Sair
                   </Link>
                 </>
               ) : (
                 <>
                   <Link to="/login" className="block w-full">
-                    <Button variant="outline" size="sm" isFullWidth>Entrar</Button>
+                    <Button variant="outline" size="sm" isFullWidth className="text-primary border-primary hover:bg-gray-50">Entrar</Button>
                   </Link>
                   <Link to="/registrar" className="block w-full">
-                    <Button variant="primary" size="sm" isFullWidth>Registrar</Button>
+                    <Button variant="secondary" size="sm" isFullWidth>Registrar</Button>
                   </Link>
                 </>
               )}

@@ -29,7 +29,9 @@ export const mockSchedule: ActivitySchedule[] = [
     startTime: '19:00',
     endTime: '22:30',
     type: 'event',
-    location: 'Auditório da UFGD – Unidade 2'
+    location: 'Auditório da UFGD – Unidade 2',
+    description: 'Apresentações artísticas e culturais dos alunos do curso de Educação Física.',
+    status: 'Aguardando'
   },
   {
     id: '2',
@@ -38,7 +40,9 @@ export const mockSchedule: ActivitySchedule[] = [
     startTime: '19:00',
     endTime: '22:30',
     type: 'presentation',
-    location: 'FAED'
+    location: 'FAED',
+    description: 'Apresentação dos trabalhos de conclusão de curso e estágios supervisionados.',
+    status: 'Aguardando'
   },
   {
     id: '3',
@@ -47,7 +51,9 @@ export const mockSchedule: ActivitySchedule[] = [
     startTime: '19:00',
     endTime: '22:30',
     type: 'presentation',
-    location: 'FAED'
+    location: 'FAED',
+    description: 'Apresentação dos trabalhos de conclusão de curso e estágios supervisionados.',
+    status: 'Aguardando'
   },
   {
     id: '4',
@@ -56,7 +62,9 @@ export const mockSchedule: ActivitySchedule[] = [
     startTime: '19:00',
     endTime: '22:30',
     type: 'presentation',
-    location: 'FAED'
+    location: 'FAED',
+    description: 'Apresentação dos trabalhos de conclusão de curso e estágios supervisionados.',
+    status: 'Aguardando'
   },
   {
     id: '5',
@@ -65,7 +73,9 @@ export const mockSchedule: ActivitySchedule[] = [
     startTime: '19:00',
     endTime: '22:30',
     type: 'workshop',
-    location: 'Confira o local de acordo com sua inscrição'
+    location: 'Confira o local de acordo com sua inscrição',
+    description: 'Oficinas práticas sobre diferentes temas da Educação Física.',
+    status: 'Aguardando'
   }
 ];
 

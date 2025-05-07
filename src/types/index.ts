@@ -6,6 +6,9 @@ export interface ActivitySchedule {
   endTime: string;
   type: 'event' | 'presentation' | 'workshop';
   location: string;
+  description: string;
+  speaker?: string;
+  status: string;
 }
 
 export interface EventInfo {

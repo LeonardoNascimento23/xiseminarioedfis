@@ -5,10 +5,10 @@ import { eventInfo } from '../data/mockData';
 const CommitteePage: React.FC = () => {
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary-dark py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Comissão Organizadora</h1>
-          <p className="text-blue-100 text-lg">
+          <p className="text-yellow-100 text-lg">
             Conheça nossa equipe de organização
           </p>
         </div>
