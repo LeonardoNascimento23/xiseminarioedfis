@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "noticias"
+    label: "Notícias"
+    folder: "src/content/noticias"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Data", name: "date", widget: "datetime"}
+      - {label: "Autor", name: "author", widget: "string"}
+      - {label: "Categoria", name: "category", widget: "string"}
+      - {label: "Imagem", name: "image", widget: "image"}
+      - {label: "Resumo", name: "summary", widget: "text"}
+      - {label: "Conteúdo", name: "body", widget: "markdown"}
+      - {label: "Tags", name: "tags", widget: "list"}
+      - {label: "Publicado", name: "published", widget: "boolean"}
+
+  - name: "palestras"
+    label: "Palestras"
+    folder: "src/content/palestras"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Data", name: "date", widget: "datetime"}
+      - {label: "Palestrante", name: "speaker", widget: "string"}
+      - {label: "Descrição", name: "description", widget: "markdown"}
+      - {label: "Duração", name: "duration", widget: "number"}
+      - {label: "Imagem", name: "image", widget: "image"}
+      - {label: "Vagas", name: "max_participants", widget: "number"}
+
+  - name: "galeria"
+    label: "Galeria"
+    folder: "src/content/galeria"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Descrição", name: "description", widget: "text"}
+      - {label: "Categoria", name: "category", widget: "string"}
+      - {label: "Imagem", name: "image", widget: "image"} 

@@ -40,6 +40,15 @@ CREATE TABLE IF NOT EXISTS public.lectures (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- Criar tabela de galeria
+CREATE TABLE IF NOT EXISTS public.gallery (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    url TEXT NOT NULL,
+    description TEXT,
+    category TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- Criar bucket para imagens
 INSERT INTO storage.buckets (id, name, public) VALUES ('images', 'images', true);
 
@@ -65,4 +74,10 @@ CREATE POLICY "Deletar palestrantes autenticado" ON public.speakers FOR DELETE U
 CREATE POLICY "Palestras públicas" ON public.lectures FOR SELECT USING (true);
 CREATE POLICY "Inserir palestras autenticado" ON public.lectures FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "Atualizar palestras autenticado" ON public.lectures FOR UPDATE USING (auth.role() = 'authenticated');
-CREATE POLICY "Deletar palestras autenticado" ON public.lectures FOR DELETE USING (auth.role() = 'authenticated'); 
+CREATE POLICY "Deletar palestras autenticado" ON public.lectures FOR DELETE USING (auth.role() = 'authenticated');
+
+-- Configurar políticas de segurança para a tabela de galeria
+CREATE POLICY "Galeria pública" ON public.gallery FOR SELECT USING (true);
+CREATE POLICY "Inserir imagens autenticado" ON public.gallery FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Atualizar imagens autenticado" ON public.gallery FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Deletar imagens autenticado" ON public.gallery FOR DELETE USING (auth.role() = 'authenticated'); 
