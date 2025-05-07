@@ -30,7 +30,7 @@ const NewsPage: React.FC = () => {
       <Layout>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
             <p className="mt-4 text-gray-600">Carregando notícias...</p>
           </div>
         </div>
@@ -52,11 +52,11 @@ const NewsPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Notícias e Atualizações</h1>
-          <p className="text-blue-100 text-lg max-w-3xl mx-auto">
-            Fique por dentro de todas as novidades sobre o Seminário de Educação Física.
+          <h1 className="text-4xl font-bold text-white mb-4">Notícias</h1>
+          <p className="text-gray-100 text-lg max-w-3xl mx-auto">
+            Fique por dentro das últimas novidades do seminário
           </p>
         </div>
       </div>
@@ -70,7 +70,7 @@ const NewsPage: React.FC = () => {
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
                 placeholder="Buscar notícias..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -94,7 +94,7 @@ const NewsPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Filtrar por Categoria</label>
                   <select
-                    className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
                   >
@@ -121,7 +121,7 @@ const NewsPage: React.FC = () => {
                     <Calendar className="h-4 w-4 mr-2" />
                     <span className="text-sm">{new Date(article.date).toLocaleDateString('pt-BR')}</span>
                     <span className="mx-2">•</span>
-                    <span className="text-sm text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{article.category}</span>
+                    <span className="text-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">{article.category}</span>
                   </div>
                   
                   <h2 className="text-xl font-bold text-gray-900 mb-2">{article.title}</h2>

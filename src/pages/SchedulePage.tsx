@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock, MapPin, User } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { mockSchedule } from '../data/mockData';
 import { ActivitySchedule } from '../types';
@@ -63,114 +63,90 @@ const SchedulePage: React.FC = () => {
     }
   };
 
+  const getStatusColor = (status: string) => {
+    if (status === 'Em andamento') {
+      return 'bg-primary border-primary-dark';
+    }
+    return 'bg-gray-200 border-gray-300';
+  };
+
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Programação Completa</h1>
-          <p className="text-blue-100 text-lg max-w-3xl mx-auto">
-            Confira a programação detalhada do Seminário de Educação Física e planeje sua participação.
+          <h1 className="text-4xl font-bold text-white mb-4">Programação do Evento</h1>
+          <p className="text-gray-100 text-lg max-w-3xl mx-auto">
+            Confira a programação completa do seminário
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Date selector */}
-        <div className="bg-white shadow-sm rounded-lg border border-gray-200 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
-            {uniqueDates.map((date) => (
-              <button
-                key={date}
-                className={`p-4 text-left transition-colors duration-200 ${
-                  selectedDate === date 
-                    ? 'bg-blue-50 text-blue-700' 
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
-                onClick={() => setSelectedDate(date)}
-              >
-                <div className="flex items-center">
-                  <Calendar className={`h-5 w-5 mr-2 ${selectedDate === date ? 'text-blue-700' : 'text-gray-500'}`} />
-                  <div>
-                    <span className="block text-sm text-gray-500">
-                      {new Date(date).toLocaleDateString('pt-BR', { weekday: 'long' })}
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="md:w-64 flex-shrink-0">
+            <div className="sticky top-24">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Datas</h3>
+              <div className="space-y-2">
+                {uniqueDates.map((date) => (
+                  <button
+                    key={date}
+                    onClick={() => setSelectedDate(date)}
+                    className={`w-full text-left px-4 py-2 rounded-md ${
+                      selectedDate === date ? 'bg-primary/10 text-primary' : 'text-gray-500'
+                    }`}
+                  >
+                    <Calendar className={`h-5 w-5 mr-2 ${selectedDate === date ? 'text-primary' : 'text-gray-500'}`} />
+                    <span className={`font-medium ${selectedDate === date ? 'text-primary' : 'text-gray-900'}`}>
+                      {date}
                     </span>
-                    <span className={`font-medium ${selectedDate === date ? 'text-blue-700' : 'text-gray-900'}`}>
-                      {new Date(date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-          <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              {formatDate(selectedDate)}
-            </h2>
-
-            {sortedTimeBlocks.length > 0 ? (
-              <div className="space-y-8">
-                {sortedTimeBlocks.map((timeBlock) => (
-                  <div key={timeBlock} className="relative">
-                    <div className="flex items-center mb-4">
-                      <Clock className="h-5 w-5 text-blue-700 mr-2" />
-                      <h3 className="text-lg font-semibold text-gray-900">{timeBlock}</h3>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {scheduleByTime[timeBlock].map((activity) => (
-                        <div 
-                          key={activity.id} 
-                          className={`rounded-lg border-l-4 shadow-sm bg-white overflow-hidden ${getActivityTypeStyle(activity.type)}`}
-                        >
-                          <div className="p-4">
-                            <div className="flex justify-between items-start mb-3">
-                              <h4 className="text-lg font-semibold text-gray-900">{activity.title}</h4>
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-opacity-20 text-gray-800 bg-gray-200">
-                                {getActivityTypeText(activity.type)}
-                              </span>
-                            </div>
-                            
-                            <div className="flex items-center text-gray-600 text-sm mb-2">
-                              <MapPin className="h-4 w-4 mr-1" />
-                              <span>{activity.location}</span>
-                            </div>
-                            
-                            <div className="flex items-center text-gray-600 text-sm">
-                              <Clock className="h-4 w-4 mr-1" />
-                              <span>{activity.startTime} - {activity.endTime}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  </button>
                 ))}
               </div>
-            ) : (
-              <div className="text-center py-10">
-                <p className="text-gray-500">Nenhuma atividade programada para esta data.</p>
-              </div>
-            )}
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <div className="space-y-8">
+              {scheduleByTime[selectedDate].map((event) => (
+                <div key={event.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                  <div className="flex items-center mb-4">
+                    <Clock className="h-5 w-5 text-primary mr-2" />
+                    <span className="text-gray-600">{event.startTime} - {event.endTime}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
+                  <p className="text-gray-600 mb-4">{event.description}</p>
+                  {event.speaker && (
+                    <div className="flex items-center text-gray-600">
+                      <User className="h-5 w-5 mr-2" />
+                      <span>{event.speaker}</span>
+                    </div>
+                  )}
+                  {event.location && (
+                    <div className="flex items-center text-gray-600 mt-2">
+                      <MapPin className="h-5 w-5 mr-2" />
+                      <span>{event.location}</span>
+                    </div>
+                  )}
+                  <div className="mt-4 flex items-center">
+                    <div className={`h-2 w-24 rounded-full ${getStatusColor(event.status)}`}></div>
+                    <span className="ml-2 text-sm text-gray-500">{event.status}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="bg-blue-50 rounded-lg border border-blue-100 p-6 mt-8">
-          <h3 className="text-lg font-semibold text-blue-900 mb-4">Legenda</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 mt-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Legenda</h3>
+          <div className="flex items-center space-x-8">
             <div className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-blue-600 mr-2"></div>
-              <span className="text-gray-700">Palestras</span>
+              <div className="w-4 h-4 rounded-full bg-primary mr-2"></div>
+              <span className="text-gray-600">Em andamento</span>
             </div>
             <div className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-green-600 mr-2"></div>
-              <span className="text-gray-700">Workshops</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-gray-500 mr-2"></div>
-              <span className="text-gray-700">Intervalos</span>
+              <div className="w-4 h-4 rounded-full bg-gray-200 mr-2"></div>
+              <span className="text-gray-600">Aguardando</span>
             </div>
           </div>
         </div>

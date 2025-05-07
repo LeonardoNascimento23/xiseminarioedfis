@@ -56,7 +56,7 @@ const RegisterPage: React.FC = () => {
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Ou{' '}
-              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+              <Link to="/login" className="font-medium text-primary hover:text-primary-dark">
                 entre na sua conta
               </Link>
             </p>

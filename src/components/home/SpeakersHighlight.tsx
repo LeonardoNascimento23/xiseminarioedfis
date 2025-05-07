@@ -18,7 +18,7 @@ const SpeakersHighlight: React.FC<SpeakersHighlightProps> = ({ lectures }) => {
   ).slice(0, 4); // Limit to 4 speakers
 
   return (
-    <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
+    <section className="py-16 bg-gradient-to-b from-primary/5 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">Palestrantes de Destaque</h2>
@@ -39,7 +39,7 @@ const SpeakersHighlight: React.FC<SpeakersHighlightProps> = ({ lectures }) => {
                   alt={speaker.name} 
                   className="w-full h-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-blue-700 bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
               </div>
               <h3 className="text-xl font-bold text-gray-900">{speaker.name}</h3>
               <p className="mt-2 text-gray-600 text-sm line-clamp-3">{speaker.bio}</p>

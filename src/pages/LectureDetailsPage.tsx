@@ -24,12 +24,12 @@ const LectureDetailsPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="mb-6 md:mb-0">
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{lecture.title}</h1>
-              <div className="flex items-center text-blue-50">
+              <div className="flex items-center text-gray-100">
                 <User className="h-5 w-5 mr-2" />
                 <span>{lecture.speaker}</span>
               </div>

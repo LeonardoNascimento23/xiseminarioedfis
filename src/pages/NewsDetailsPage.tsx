@@ -27,17 +27,17 @@ const NewsDetailsPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link 
             to="/noticias" 
-            className="inline-flex items-center text-blue-50 hover:text-white mb-6"
+            className="inline-flex items-center text-gray-100 hover:text-white mb-6"
           >
             <ArrowLeft className="h-5 w-5 mr-2" />
             Voltar para Notícias
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{article.title}</h1>
-          <div className="flex flex-wrap items-center text-blue-50 gap-4">
+          <div className="flex flex-wrap items-center text-gray-100 gap-4">
             <div className="flex items-center">
               <Calendar className="h-5 w-5 mr-2" />
               <span>{new Date(article.date).toLocaleDateString('pt-BR')}</span>
@@ -46,7 +46,7 @@ const NewsDetailsPage: React.FC = () => {
               <User className="h-5 w-5 mr-2" />
               <span>{article.author}</span>
             </div>
-            <span className="px-2 py-1 bg-blue-600 rounded-full text-sm">
+            <span className="px-2 py-1 bg-primary-dark rounded-full text-sm">
               {article.category}
             </span>
           </div>
@@ -62,7 +62,7 @@ const NewsDetailsPage: React.FC = () => {
           />
           
           <div className="p-8">
-            <div className="prose prose-blue max-w-none">
+            <div className="prose prose-primary max-w-none">
               {article.content.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="mb-4 text-gray-600 leading-relaxed">
                   {paragraph}

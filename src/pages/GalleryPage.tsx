@@ -7,20 +7,19 @@ const GalleryPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Galeria de Fotos</h1>
-          <p className="text-blue-100 text-lg">
-            Acompanhe os registros do nosso evento
+          <p className="text-gray-100 text-lg">
+            Confira os momentos marcantes das edições anteriores
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {loading ? (
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Carregando imagens...</p>
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           </div>
         ) : error ? (
           <div className="text-center text-red-600">
@@ -33,19 +32,24 @@ const GalleryPage: React.FC = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {images.map((image) => (
-              <div key={image.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div
+                key={image.id}
+                className="relative group overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+              >
                 <img
                   src={image.url}
                   alt={image.description}
                   className="w-full h-64 object-cover"
                 />
-                <div className="p-4">
-                  <p className="text-gray-800 font-medium">{image.description}</p>
-                  {image.category && (
-                    <p className="text-sm text-gray-500 mt-1">{image.category}</p>
-                  )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-white text-sm">{image.description}</p>
+                    {image.category && (
+                      <p className="text-gray-300 text-xs mt-1">{image.category}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

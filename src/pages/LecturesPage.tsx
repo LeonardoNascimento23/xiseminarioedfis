@@ -28,10 +28,10 @@ const LecturesPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="bg-blue-700 py-16">
+      <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Palestras e Workshops</h1>
-          <p className="text-blue-100 text-lg max-w-3xl mx-auto">
+          <p className="text-gray-100 text-lg max-w-3xl mx-auto">
             Explore todas as palestras e workshops disponíveis no nosso seminário e inscreva-se para participar.
           </p>
         </div>
@@ -46,7 +46,7 @@ const LecturesPage: React.FC = () => {
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
                 placeholder="Buscar palestras, temas ou palestrantes..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -70,7 +70,7 @@ const LecturesPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Filtrar por Data</label>
                   <select
-                    className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
                     value={dateFilter}
                     onChange={(e) => setDateFilter(e.target.value)}
                   >
@@ -95,7 +95,7 @@ const LecturesPage: React.FC = () => {
                 <CardBody className="flex-grow flex flex-col">
                   <h2 className="text-xl font-bold text-gray-900 mb-2">{lecture.title}</h2>
                   <p className="text-gray-600 mb-3 line-clamp-3">{lecture.description}</p>
-                  <p className="text-blue-700 font-medium mb-4">{lecture.speaker}</p>
+                  <p className="text-primary font-medium mb-4">{lecture.speaker}</p>
                   
                   <div className="mt-auto space-y-2">
                     <div className="flex items-center text-gray-500">
@@ -117,7 +117,7 @@ const LecturesPage: React.FC = () => {
                       </span>
                       <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-blue-600 rounded-full"
+                          className="h-full bg-primary rounded-full"
                           style={{ width: `${(lecture.currentParticipants / lecture.maxParticipants) * 100}%` }}
                         ></div>
                       </div>

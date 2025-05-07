@@ -30,9 +30,9 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
   const getActivityTypeStyle = (type: string) => {
     switch (type) {
       case 'lecture':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/10 text-primary';
       case 'workshop':
-        return 'bg-green-100 text-green-800';
+        return 'bg-secondary/10 text-secondary';
       case 'break':
         return 'bg-gray-100 text-gray-800';
       default:
@@ -41,12 +41,12 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
   };
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900">Programação do Evento</h2>
-          <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-            Confira a programação completa do nosso seminário e planeje sua participação.
+          <h2 className="text-3xl font-bold text-gray-900">Programação</h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Confira os destaques da nossa programação
           </p>
         </div>
 
@@ -57,7 +57,7 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
               key={date}
               className={`px-4 py-2 font-medium text-sm transition-colors duration-200 relative
                 ${selectedDate === date 
-                  ? 'text-blue-700 border-b-2 border-blue-700' 
+                  ? 'text-primary border-b-2 border-primary' 
                   : 'text-gray-500 hover:text-gray-700'
                 }`}
               onClick={() => setSelectedDate(date)}
@@ -68,37 +68,36 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
         </div>
 
         {/* Schedule timeline */}
-        <div className="relative">
-          <div className="border-l-4 border-blue-200 ml-4 sm:ml-6 pb-8">
-            {filteredSchedule.map((item, index) => (
-              <div key={item.id} className="relative pl-8 sm:pl-10 py-4">
-                <div className="absolute left-0 top-5 transform -translate-x-1/2 w-4 h-4 rounded-full bg-blue-700"></div>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center">
-                  <span className="text-blue-700 font-semibold mr-4 mb-2 sm:mb-0">
-                    {item.startTime} - {item.endTime}
+        <div className="space-y-8">
+          {filteredSchedule.map((event, index) => (
+            <div key={event.id} className="relative">
+              <div className="flex items-start">
+                <div className="hidden sm:block w-24 flex-shrink-0 text-right">
+                  <span className={`font-semibold ${index === 0 ? 'text-primary' : 'text-gray-900'}`}>
+                    {event.startTime} - {event.endTime}
                   </span>
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 w-full transition-all duration-300 hover:shadow-md">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
-                      <span className={`text-xs px-2 py-1 rounded-full uppercase ${getActivityTypeStyle(item.type)}`}>
-                        {item.type === 'lecture' ? 'Palestra' : item.type === 'workshop' ? 'Workshop' : 'Intervalo'}
+                </div>
+
+                <div className="flex-grow ml-4 sm:ml-6">
+                  <div className="border-l-4 border-gray-200 pl-4 sm:pl-6 pb-8">
+                    <div className="relative">
+                      <div className="absolute left-0 top-5 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary"></div>
+                      <div className="sm:hidden mb-2">
+                        <span className="text-primary font-semibold">{event.startTime} - {event.endTime}</span>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">{event.title}</h3>
+                      {event.speaker && (
+                        <p className="text-gray-600 mt-1">{event.speaker}</p>
+                      )}
+                      <span className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${getActivityTypeStyle(event.type)}`}>
+                        {event.type === 'lecture' ? 'Palestra' : event.type === 'workshop' ? 'Workshop' : 'Intervalo'}
                       </span>
-                    </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center text-gray-600 text-sm">
-                      <div className="flex items-center mr-4 mb-2 sm:mb-0">
-                        <Clock className="h-4 w-4 mr-1" />
-                        <span>{item.startTime} - {item.endTime}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        <span>{item.location}</span>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         <div className="text-center mt-8">

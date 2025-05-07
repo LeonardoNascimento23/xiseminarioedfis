@@ -32,7 +32,7 @@ const LatestNews: React.FC<LatestNewsProps> = ({ news }) => {
                   <Calendar className="h-4 w-4 mr-2" />
                   <span className="text-sm">{new Date(article.date).toLocaleDateString('pt-BR')}</span>
                   <span className="mx-2">•</span>
-                  <span className="text-sm text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{article.category}</span>
+                  <span className="text-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">{article.category}</span>
                 </div>
                 
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{article.title}</h3>
