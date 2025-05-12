@@ -25,9 +25,9 @@ const RegistrationPage: React.FC = () => {
 
           <div className="flex justify-center">
             <iframe 
-              src="https://docs.google.com/forms/d/e/1FAIpQLSeULIBxu-vTP8659si5qwFY-WdKnOIXbG3GL2o9Se47kqI8rA/viewform?embedded=true" 
+              src="https://docs.google.com/forms/d/e/1FAIpQLSfAMWKNxuvZpUN1UmTh1m0aINzCIcqFuAD3f9h_8_klszPJnw/viewform?embedded=true" 
               width="100%" 
-              height="1696" 
+              height="1652" 
               frameBorder="0" 
               marginHeight="0" 
               marginWidth="0"

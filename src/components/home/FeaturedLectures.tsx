@@ -6,6 +6,14 @@ import { mockLectures } from "../../data/mockData";
 import { Badge } from "../ui/badge";
 import { Link } from 'react-router-dom';
 
+const workshopForms = {
+  'INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform',
+  'NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA': 'https://docs.google.com/forms/d/e/1FAIpQLSfWYt5r3CGj46fO4h-bFU7tceJ-Lk2rZgLyuZwyy22Soo0FwA/viewform',
+  'GINÁSTICA RÍTMICA': 'https://docs.google.com/forms/d/e/1FAIpQLSdKMxTTzetNtxk02zXbSmnwxDq0hC-6aISWnVXDoV-KsHhjog/viewform',
+  'ATIVIDADE FÍSICA FUNCIONAL': 'https://docs.google.com/forms/d/e/1FAIpQLSe3SYwwKbmhW8coOjZJRwFUivSx11bw3DkLOJPrtjCIQ2cdSA/viewform',
+  'ATIVIDADE ESPORTES DE AVENTURA': 'https://docs.google.com/forms/d/e/1FAIpQLSekKbjdBAUVqnj23RTbWEq0m7EoiJiYR5_CB89omI7BJrGb4Q/viewform'
+};
+
 export function FeaturedLectures() {
   return (
     <section className="py-12 bg-gray-50">
@@ -66,9 +74,16 @@ export function FeaturedLectures() {
               </CardContent>
 
               <CardFooter className="pt-4">
-                <Button className="w-full bg-primary hover:bg-primary/90">
-                  Inscrever-se
-                </Button>
+                <a 
+                  href={workshopForms[lecture.title as keyof typeof workshopForms]} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full"
+                >
+                  <Button className="w-full bg-primary hover:bg-primary/90">
+                    Inscrever-se
+                  </Button>
+                </a>
               </CardFooter>
             </Card>
           ))}
