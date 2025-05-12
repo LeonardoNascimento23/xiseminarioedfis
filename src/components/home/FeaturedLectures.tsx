@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/Card";
-import Button from "../ui/Button";
+import { Button } from "../ui/Button";
 import { Lecture } from '../../types';
 import { mockLectures } from "../../data/mockData";
 import { Badge } from "../ui/badge";
