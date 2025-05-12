@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock, MapPin, ChevronRight } from 'lucide-react';
+import { Button } from '../ui/Button';
 import { ActivitySchedule } from '../../types';
-import Button from '../ui/Button';
 
 interface SchedulePreviewProps {
   schedule: ActivitySchedule[];
@@ -30,13 +30,35 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
   const getActivityTypeStyle = (type: string) => {
     switch (type) {
       case 'lecture':
-        return 'bg-primary/10 text-primary';
+        return 'bg-blue-100 text-blue-800';
       case 'workshop':
-        return 'bg-secondary/10 text-secondary';
+        return 'bg-green-100 text-green-800';
+      case 'presentation':
+        return 'bg-purple-100 text-purple-800';
+      case 'event':
+        return 'bg-yellow-100 text-yellow-800';
       case 'break':
         return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Get activity type text
+  const getActivityTypeText = (type: string) => {
+    switch (type) {
+      case 'lecture':
+        return 'Palestra';
+      case 'workshop':
+        return 'Oficina';
+      case 'presentation':
+        return 'Apresentação';
+      case 'event':
+        return 'Evento';
+      case 'break':
+        return 'Intervalo';
+      default:
+        return type;
     }
   };
 
@@ -86,12 +108,16 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
                         <span className="text-primary font-semibold">{event.startTime} - {event.endTime}</span>
                       </div>
                       <h3 className="text-xl font-semibold text-gray-900">{event.title}</h3>
-                      {event.speaker && (
-                        <p className="text-gray-600 mt-1">{event.speaker}</p>
-                      )}
-                      <span className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${getActivityTypeStyle(event.type)}`}>
-                        {event.type === 'lecture' ? 'Palestra' : event.type === 'workshop' ? 'Workshop' : 'Intervalo'}
-                      </span>
+                      <div className="mt-2 space-y-2">
+                        <div className="flex items-center text-gray-600">
+                          <MapPin className="h-4 w-4 mr-2" />
+                          <span className="text-sm">{event.location}</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">{event.description}</p>
+                        <span className={`inline-block px-3 py-1 text-sm rounded-full ${getActivityTypeStyle(event.type)}`}>
+                          {getActivityTypeText(event.type)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
