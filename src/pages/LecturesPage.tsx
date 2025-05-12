@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Search, Filter } from 'lucide-react';
+import { Calendar, Clock, MapPin, Search, Filter, Users } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import { Card, CardImage, CardBody } from '../components/ui/Card';
+import { Card, CardImage, CardBody, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { mockLectures } from '../data/mockData';
 import { Lecture } from '../types';
+import { Badge } from "../components/ui/badge";
 
 const LecturesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -90,46 +91,57 @@ const LecturesPage: React.FC = () => {
         {filteredLectures.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredLectures.map((lecture) => (
-              <Card key={lecture.id} className="h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
-                <CardImage src={lecture.imageUrl} alt={lecture.title} />
-                <CardBody className="flex-grow flex flex-col">
-                  <h2 className="text-xl font-bold text-gray-900 mb-2">{lecture.title}</h2>
-                  <p className="text-gray-600 mb-3 line-clamp-3">{lecture.description}</p>
-                  <p className="text-primary font-medium mb-4">{lecture.speaker}</p>
-                  
-                  <div className="mt-auto space-y-2">
-                    <div className="flex items-center text-gray-500">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      <span className="text-sm">{new Date(lecture.date).toLocaleDateString('pt-BR')}</span>
+              <Card key={lecture.id} className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                  <img
+                    src={lecture.imageUrl}
+                    alt={lecture.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <Badge className="absolute top-4 right-4 bg-primary/90 text-white">
+                    Oficina
+                  </Badge>
+                </div>
+                
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-gray-900 line-clamp-2">
+                    {lecture.title}
+                  </CardTitle>
+                  <CardDescription className="text-gray-600">
+                    {lecture.speaker}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="flex-grow">
+                  <div className="space-y-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span>{new Date(lecture.date).toLocaleDateString('pt-BR')}</span>
                     </div>
-                    <div className="flex items-center text-gray-500">
-                      <Clock className="h-4 w-4 mr-2" />
-                      <span className="text-sm">{lecture.time}</span>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Clock className="w-4 h-4 mr-2" />
+                      <span>{lecture.time}</span>
                     </div>
-                    <div className="flex items-center text-gray-500 mb-4">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span className="text-sm">{lecture.location}</span>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      <span>{lecture.location}</span>
                     </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">
-                        {lecture.currentParticipants}/{lecture.maxParticipants} inscritos
-                      </span>
-                      <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-primary rounded-full"
-                          style={{ width: `${(lecture.currentParticipants / lecture.maxParticipants) * 100}%` }}
-                        ></div>
-                      </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Users className="w-4 h-4 mr-2" />
+                      <span>{lecture.currentParticipants}/{lecture.maxParticipants} participantes</span>
                     </div>
-                    
-                    <Link to={`/palestras/${lecture.id}`} className="block mt-4">
-                      <Button variant="default" className="w-full">
-                        Ver Detalhes
-                      </Button>
-                    </Link>
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {lecture.description}
+                    </p>
                   </div>
-                </CardBody>
+                </CardContent>
+
+                <CardFooter className="pt-4">
+                  <Button className="w-full bg-primary hover:bg-primary/90">
+                    Inscrever-se
+                  </Button>
+                </CardFooter>
               </Card>
             ))}
           </div>

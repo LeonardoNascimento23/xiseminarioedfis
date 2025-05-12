@@ -4,6 +4,7 @@ import { Button } from "../ui/Button";
 import { Lecture } from '../../types';
 import { mockLectures } from "../../data/mockData";
 import { Badge } from "../ui/badge";
+import { Link } from 'react-router-dom';
 
 export function FeaturedLectures() {
   return (
@@ -74,9 +75,11 @@ export function FeaturedLectures() {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" className="text-primary hover:text-primary/90">
-            Ver Todas as Oficinas
-          </Button>
+          <Link to="/oficinas">
+            <Button variant="outline" className="text-primary hover:text-primary/90">
+              Ver Todas as Oficinas
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

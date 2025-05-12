@@ -26,6 +26,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/palestras" element={<LecturesPage />} />
           <Route path="/palestras/:id" element={<LectureDetailsPage />} />
+          <Route path="/oficinas" element={<LecturesPage />} />
           <Route path="/noticias" element={<NewsPage />} />
           <Route path="/noticias/:id" element={<NewsDetailsPage />} />
           <Route path="/programacao" element={<SchedulePage />} />

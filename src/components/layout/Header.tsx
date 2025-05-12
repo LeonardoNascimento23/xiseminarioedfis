@@ -37,6 +37,9 @@ const Header: React.FC = () => {
               <Link to="/programacao" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Programação
               </Link>
+              <Link to="/oficinas" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
+                Oficinas
+              </Link>
               <Link to="/noticias" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Notícias
               </Link>
@@ -113,14 +116,11 @@ const Header: React.FC = () => {
             <Link to="/programacao" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Programação
             </Link>
+            <Link to="/oficinas" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
+              Oficinas
+            </Link>
             <Link to="/noticias" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Notícias
-            </Link>
-            <Link to="/galeria" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
-              Fotos
-            </Link>
-            <Link to="/comissao" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
-              Sobre
             </Link>
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
