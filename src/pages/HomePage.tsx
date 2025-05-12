@@ -4,8 +4,7 @@ import Hero from '../components/home/Hero';
 import FeaturedLectures from '../components/home/FeaturedLectures';
 import LatestNews from '../components/home/LatestNews';
 import SpeakersHighlight from '../components/home/SpeakersHighlight';
-import SchedulePreview from '../components/home/SchedulePreview';
-import { mockLectures, mockNewsArticles, mockSchedule } from '../data/mockData';
+import { mockLectures } from '../data/mockData';
 
 const SectionDivider: React.FC<{ icon: string; alt: string }> = ({ icon, alt }) => (
   <div className="relative py-16">
@@ -29,13 +28,7 @@ const HomePage: React.FC = () => {
         icon="/images/professor.svg" 
         alt="Ilustração de professor" 
       />
-      <FeaturedLectures lectures={mockLectures} />
-      
-      <SectionDivider 
-        icon="/images/calendar.svg" 
-        alt="Ilustração de calendário" 
-      />
-      <SchedulePreview schedule={mockSchedule} />
+      <FeaturedLectures />
       
       <SectionDivider 
         icon="/images/conference.svg" 
@@ -47,7 +40,7 @@ const HomePage: React.FC = () => {
         icon="/images/newsletter.svg" 
         alt="Ilustração de newsletter" 
       />
-      <LatestNews news={mockNewsArticles} />
+      <LatestNews />
     </Layout>
   );
 };
