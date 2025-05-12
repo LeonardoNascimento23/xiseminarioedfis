@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { ActivitySchedule } from '../../types';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/Card";
+import { Badge } from "../ui/badge";
+import { mockSchedule } from "../../data/mockData";
 
 interface SchedulePreviewProps {
   schedule: ActivitySchedule[];
@@ -63,75 +66,60 @@ const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule }) => {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 bg-gray-50">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900">Programação</h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Confira os destaques da nossa programação
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Programação em Destaque</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Confira as principais atividades programadas para o evento.
           </p>
         </div>
 
-        {/* Date selector tabs */}
-        <div className="flex flex-wrap justify-center mb-8 border-b">
-          {uniqueDates.map((date) => (
-            <button
-              key={date}
-              className={`px-4 py-2 font-medium text-sm transition-colors duration-200 relative
-                ${selectedDate === date 
-                  ? 'text-primary border-b-2 border-primary' 
-                  : 'text-gray-500 hover:text-gray-700'
-                }`}
-              onClick={() => setSelectedDate(date)}
-            >
-              {formatDate(date)}
-            </button>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {mockSchedule.slice(0, 3).map((activity: ActivitySchedule) => (
+            <Card key={activity.id} className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold text-gray-900 line-clamp-2">
+                  {activity.title}
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  {activity.type}
+                </CardDescription>
+              </CardHeader>
 
-        {/* Schedule timeline */}
-        <div className="space-y-8">
-          {filteredSchedule.map((event, index) => (
-            <div key={event.id} className="relative">
-              <div className="flex items-start">
-                <div className="hidden sm:block w-24 flex-shrink-0 text-right">
-                  <span className={`font-semibold ${index === 0 ? 'text-primary' : 'text-gray-900'}`}>
-                    {event.startTime} - {event.endTime}
-                  </span>
-                </div>
-
-                <div className="flex-grow ml-4 sm:ml-6">
-                  <div className="border-l-4 border-gray-200 pl-4 sm:pl-6 pb-8">
-                    <div className="relative">
-                      <div className="absolute left-0 top-5 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary"></div>
-                      <div className="sm:hidden mb-2">
-                        <span className="text-primary font-semibold">{event.startTime} - {event.endTime}</span>
-                      </div>
-                      <h3 className="text-xl font-semibold text-gray-900">{event.title}</h3>
-                      <div className="mt-2 space-y-2">
-                        <div className="flex items-center text-gray-600">
-                          <MapPin className="h-4 w-4 mr-2" />
-                          <span className="text-sm">{event.location}</span>
-                        </div>
-                        <p className="text-gray-600 text-sm">{event.description}</p>
-                        <span className={`inline-block px-3 py-1 text-sm rounded-full ${getActivityTypeStyle(event.type)}`}>
-                          {getActivityTypeText(event.type)}
-                        </span>
-                      </div>
-                    </div>
+              <CardContent className="flex-grow">
+                <div className="space-y-4">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    <span>{new Date(activity.date).toLocaleDateString('pt-BR')}</span>
                   </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Clock className="w-4 h-4 mr-2" />
+                    <span>{activity.startTime} - {activity.endTime}</span>
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <MapPin className="w-4 h-4 mr-2" />
+                    <span>{activity.location}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 line-clamp-3">
+                    {activity.description}
+                  </p>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+
+              <CardFooter className="pt-4">
+                <Button className="w-full bg-primary hover:bg-primary/90">
+                  Ver Detalhes
+                </Button>
+              </CardFooter>
+            </Card>
           ))}
         </div>
 
-        <div className="text-center mt-8">
-          <Link to="/programacao">
-            <Button variant="primary">
-              Ver Programação Completa
-            </Button>
-          </Link>
+        <div className="text-center mt-12">
+          <Button variant="outline" className="text-primary hover:text-primary/90">
+            Ver Programação Completa
+          </Button>
         </div>
       </div>
     </section>

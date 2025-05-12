@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, MapPin } from 'lucide-react';
-import Button from '../ui/Button';
+import { Button } from '../ui/Button';
 import { Link } from 'react-router-dom';
 import { eventInfo } from '../../data/mockData';
 

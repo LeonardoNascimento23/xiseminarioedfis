@@ -4,11 +4,11 @@ export interface ActivitySchedule {
   date: string;
   startTime: string;
   endTime: string;
-  type: 'event' | 'presentation' | 'workshop';
+  type: 'lecture' | 'workshop' | 'presentation' | 'event' | 'break';
   location: string;
   description: string;
-  speaker?: string;
   status: string;
+  speaker?: string;
 }
 
 export interface EventInfo {

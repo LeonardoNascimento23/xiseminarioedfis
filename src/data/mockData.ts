@@ -115,59 +115,97 @@ export const mockSchedule: ActivitySchedule[] = [
 export const mockLectures: Lecture[] = [
   {
     id: '1',
-    title: 'Práticas Pedagógicas Inovadoras em Educação Física',
-    speaker: 'Dra. Maria Santos',
-    speakerBio: 'Doutora em Educação Física pela USP, com mais de 15 anos de experiência em metodologias ativas de ensino. Pesquisadora na área de práticas pedagógicas inovadoras e tecnologia aplicada à Educação Física.',
-    description: 'Uma análise aprofundada das metodologias contemporâneas no ensino da Educação Física, explorando abordagens inovadoras e sua aplicação prática em diferentes contextos educacionais.',
-    date: '2025-06-24',
-    time: '19:00',
-    location: 'Auditório Principal - FAED',
-    imageUrl: 'https://images.pexels.com/photos/3755440/pexels-photo-3755440.jpeg',
-    maxParticipants: 100,
-    currentParticipants: 45,
+    title: 'OFICINA ATIVIDADE FÍSICA FUNCIONAL',
+    speaker: 'Doutora Karla Soares Bertuccini',
+    speakerBio: 'Formada em licenciatura e bacharel em educação Física. Especialista em Educação, métodos e tecnica de ensino. Formada em treinamento Funcional, CORE 360. Formação em Pilates. Formação em Liberação Miofascial. Formada em sistemas de treinamento Funcional. Técnica de laboratório na área de educação física e Atua na Progesp - Divisao de Saúde com projetos voltados para a saúde do servidor.',
+    description: 'Uma oficina prática sobre Atividade Física Funcional, ministrada pela Doutora Karla Soares Bertuccini.',
+    date: '2025-06-26',
+    time: '08:00',
+    location: 'Sala de Ginástica - UFGD',
+    imageUrl: '/images/DoutoraKarlaSoaresBertuccini.jpeg',
+    maxParticipants: 30,
+    currentParticipants: 15,
     learningPoints: [
-      'Metodologias ativas aplicadas à Educação Física',
-      'Integração de tecnologia nas aulas práticas',
-      'Avaliação formativa no contexto da Educação Física',
-      'Estratégias para engajamento dos alunos'
+      'Fundamentos da Atividade Física Funcional',
+      'Técnicas de Treinamento Funcional',
+      'Aplicações Práticas do CORE 360',
+      'Métodos de Liberação Miofascial'
     ]
   },
   {
     id: '2',
-    title: 'Educação Física Inclusiva: Desafios e Possibilidades',
-    speaker: 'Dr. Carlos Oliveira',
-    speakerBio: 'Especialista em Educação Física Adaptada, com vasta experiência em programas de inclusão. Coordenador do Núcleo de Acessibilidade e Inclusão da UFMG.',
-    description: 'Estratégias práticas e fundamentação teórica para uma prática inclusiva e adaptada nas aulas de Educação Física, considerando diferentes necessidades e habilidades.',
-    date: '2025-06-25',
-    time: '19:00',
-    location: 'Auditório Principal - FAED',
-    imageUrl: 'https://images.pexels.com/photos/3755435/pexels-photo-3755435.jpeg',
-    maxParticipants: 80,
-    currentParticipants: 65,
+    title: 'OFICINA ESPORTES DE AVENTURA',
+    speaker: 'Professor Lucas da Silva Ferreira',
+    speakerBio: 'Meu nome é Lucas da Silva Ferreira, tenho 31 anos, sou da 4ª turma do curso de Educação Física da UFGD e me formei em 2016. No último semestre eu prestei concurso para professor da rede municipal de Dourados e em 2017 assumi o cargo onde permaneço até hoje. Tenho experiência na educação infantil, pois é uma fase onde me identifiquei mais e também porque há uma importância a mais sobre ensinar Educação Física para essa faixa etária. A oficina que estarei mestrando se chama "Esportes de Aventura" e nela estarei apresentando um esporte chamado Slackline, esse esporte ainda está em crescimento pelo Brasil e está conseguindo uma boa base de praticantes e atletas. Eu conheci e comecei a praticar em 2012 e por todo esse caminho a pratica do Slackline se tornou rotina, tanto na hora de adquirir o material até levar para a escola e apresentar para meus alunos.',
+    description: 'Uma oficina prática sobre Esportes de Aventura, com foco especial em Slackline.',
+    date: '2025-06-26',
+    time: '13:00',
+    location: 'Área Externa - UFGD',
+    imageUrl: '/images/ProfessorLucasdaSilvaFerreira.jpeg',
+    maxParticipants: 25,
+    currentParticipants: 20,
     learningPoints: [
-      'Adaptação de atividades para diferentes necessidades',
-      'Comunicação efetiva com alunos com deficiência',
-      'Recursos e materiais adaptados',
-      'Avaliação inclusiva em Educação Física'
+      'Introdução ao Slackline',
+      'Técnicas básicas e avançadas',
+      'Segurança e equipamentos',
+      'Aplicações pedagógicas'
     ]
   },
   {
     id: '3',
-    title: 'Pesquisa em Educação Física: Tendências Atuais',
-    speaker: 'Dra. Ana Paula Silva',
-    speakerBio: 'Pesquisadora renomada com publicações internacionais na área de Educação Física. Coordenadora do Laboratório de Pesquisa em Movimento Humano da UFRJ.',
-    description: 'Panorama completo das principais linhas de pesquisa em Educação Física no Brasil e no mundo, com foco em metodologias inovadoras e resultados práticos.',
+    title: 'OFICINA GINÁSTICA RÍTMICA',
+    speaker: 'Professora Paola Gouveia Schemberger Levandoski',
+    speakerBio: 'Formada em Educação Física pela Universidade Estadual de Ponta Grossa (UEPG) é Especialista em Ginástica Rítmica pela UNOPAR. Atualmente é professora da Escola SEI- Dourados. Tem experiência na modalidade de Ginástica Artística sendo Técnica Campeã em Campeonatos desta modalidade no estado do Paraná. Formada também em Ballet Clássico foi aprovada na Escola de Dança do Teatro Guaíra em Curitiba e participou como solista em diversos espetáculos.',
+    description: 'Uma oficina prática sobre Ginástica Rítmica, ministrada pela Professora Paola Gouveia Schemberger Levandoski.',
+    date: '2025-06-26',
+    time: '08:00',
+    location: 'Sala de Dança - UFGD',
+    imageUrl: '/images/ProfessoraPaolaGouveiaSchembergerLevandoski.jpeg',
+    maxParticipants: 25,
+    currentParticipants: 18,
+    learningPoints: [
+      'Fundamentos da Ginástica Rítmica',
+      'Técnicas de Aparelhos',
+      'Coreografia e Expressão Corporal',
+      'Metodologia de Ensino'
+    ]
+  },
+  {
+    id: '4',
+    title: 'OFICINA INTRODUÇÃO AO BEACH TENNIS',
+    speaker: 'Instrutor Jader Morilla',
+    speakerBio: 'Jader Morilla, 32 anos, há cinco anos trabalha com esporte na areia, inicialmente no futevôlei e há dois anos também no Beach tennis. Curso de Capacitação de professores metodologia Naldo, Campo Grande-MS. Workshop Escola Toss. Cursos de Capacitação pela CBT, ITF. Curso nível verde 🟢 em Cascavel-PR. Curso nível amarelo 🟡 Londrina-PR. Graduando quinto semestre em Educação Física, Unicesumar.',
+    description: 'Uma oficina prática sobre Beach Tennis, ministrada pelo Instrutor Jader Morilla.',
+    date: '2025-06-26',
+    time: '13:00',
+    location: 'Quadra de Areia - UFGD',
+    imageUrl: '/images/InstrutorJaderMorilla.jpeg',
+    maxParticipants: 20,
+    currentParticipants: 15,
+    learningPoints: [
+      'Regras e Fundamentos do Beach Tennis',
+      'Técnicas Básicas e Avançadas',
+      'Estratégias de Jogo',
+      'Treinamento Específico'
+    ]
+  },
+  {
+    id: '5',
+    title: 'OFICINA NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA',
+    speaker: 'Doutor Paulo Christiano Barboso Lollo',
+    speakerBio: 'Possui graduação em Educação Física pela Universidade Estadual de Campinas (2004), mestrado em Alimentos e Nutrição pela Universidade Estadual de Campinas (2007) e doutorado em Alimentos e Nutrição pela Universidade Estadual de Campinas (2012) e pós-doutorado em Fisiologia e Biofísica pela pela Universidade Estadual de Campinas (2013). Atualmente é professor de magistério superior da Universidade Federal da Grande Dourados.',
+    description: 'Uma oficina sobre Nutrição Esportiva, com foco em hipertrofia e redução de massa gorda.',
     date: '2025-06-26',
     time: '19:00',
-    location: 'Auditório Principal - FAED',
-    imageUrl: 'https://images.pexels.com/photos/3755442/pexels-photo-3755442.jpeg',
-    maxParticipants: 120,
-    currentParticipants: 85,
+    location: 'Auditório - UFGD',
+    imageUrl: '/images/DoutorPauloChristianoBarbosoLollo.jpeg',
+    maxParticipants: 50,
+    currentParticipants: 35,
     learningPoints: [
-      'Métodos de pesquisa em Educação Física',
-      'Análise de dados em estudos do movimento',
-      'Publicação científica na área',
-      'Integração entre pesquisa e prática profissional'
+      'Fundamentos da Nutrição Esportiva',
+      'Estratégias para Hipertrofia',
+      'Métodos de Redução de Massa Gorda',
+      'Suplementação Esportiva'
     ]
   }
 ];

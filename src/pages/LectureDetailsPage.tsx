@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { Calendar, Clock, MapPin, User, Users, Award } from 'lucide-react';
-import Button from '../components/ui/Button';
+import { Button } from '../components/ui/Button';
 import { mockLectures } from '../data/mockData';
 
 const LectureDetailsPage: React.FC = () => {
