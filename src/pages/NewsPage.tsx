@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Search, Filter } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import { Card, CardImage, CardBody } from '../components/ui/Card';
+import Card, { CardImage, CardBody } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { useNews } from '../hooks/useSupabase';
@@ -80,10 +80,10 @@ const NewsPage: React.FC = () => {
             <Button 
               variant="outline" 
               size="sm"
-              leftIcon={<Filter className="h-4 w-4" />}
               onClick={() => setShowFilters(!showFilters)}
-              className="md:w-auto"
+              className="md:w-auto flex items-center gap-2"
             >
+              <Filter className="h-4 w-4" />
               {showFilters ? 'Esconder Filtros' : 'Mostrar Filtros'}
             </Button>
           </div>
@@ -114,7 +114,7 @@ const NewsPage: React.FC = () => {
         {filteredArticles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredArticles.map((article) => (
-              <Card key={article.id} isHoverable withBorder>
+              <Card key={article.id} className="hover:shadow-lg transition-shadow duration-300">
                 <CardImage src={article.image_url} alt={article.title} />
                 <CardBody>
                   <div className="flex items-center text-gray-500 mb-2">
@@ -130,7 +130,7 @@ const NewsPage: React.FC = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-500">Por {article.author}</span>
                     <Link to={`/noticias/${article.id}`}>
-                      <Button variant="primary" size="sm">
+                      <Button variant="default" size="sm">
                         Leia mais
                       </Button>
                     </Link>

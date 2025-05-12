@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, Search, Filter } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import { Card, CardImage, CardBody } from '../components/ui/Card';
-import Button from '../components/ui/Button';
+import Card, { CardImage, CardBody } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { mockLectures } from '../data/mockData';
 import { Lecture } from '../types';
@@ -56,10 +56,10 @@ const LecturesPage: React.FC = () => {
             <Button 
               variant="outline" 
               size="sm"
-              leftIcon={<Filter className="h-4 w-4" />}
               onClick={() => setShowFilters(!showFilters)}
-              className="md:w-auto"
+              className="md:w-auto flex items-center gap-2"
             >
+              <Filter className="h-4 w-4" />
               {showFilters ? 'Esconder Filtros' : 'Mostrar Filtros'}
             </Button>
           </div>
@@ -90,7 +90,7 @@ const LecturesPage: React.FC = () => {
         {filteredLectures.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredLectures.map((lecture) => (
-              <Card key={lecture.id} isHoverable withBorder className="h-full flex flex-col">
+              <Card key={lecture.id} className="h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
                 <CardImage src={lecture.imageUrl} alt={lecture.title} />
                 <CardBody className="flex-grow flex flex-col">
                   <h2 className="text-xl font-bold text-gray-900 mb-2">{lecture.title}</h2>
@@ -124,7 +124,7 @@ const LecturesPage: React.FC = () => {
                     </div>
                     
                     <Link to={`/palestras/${lecture.id}`} className="block mt-4">
-                      <Button variant="primary" isFullWidth>
+                      <Button variant="default" className="w-full">
                         Ver Detalhes
                       </Button>
                     </Link>
