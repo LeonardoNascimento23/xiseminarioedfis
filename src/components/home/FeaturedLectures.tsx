@@ -5,16 +5,31 @@ import { Lecture } from '../../types';
 import { mockLectures } from "../../data/mockData";
 import { Badge } from "../ui/badge";
 import { Link } from 'react-router-dom';
+import { Modal } from '../ui/Modal';
+import { useState } from 'react';
 
 const workshopForms = {
-  'INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform',
-  'NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA': 'https://docs.google.com/forms/d/e/1FAIpQLSfWYt5r3CGj46fO4h-bFU7tceJ-Lk2rZgLyuZwyy22Soo0FwA/viewform',
-  'GINÁSTICA RÍTMICA': 'https://docs.google.com/forms/d/e/1FAIpQLSdKMxTTzetNtxk02zXbSmnwxDq0hC-6aISWnVXDoV-KsHhjog/viewform',
-  'ATIVIDADE FÍSICA FUNCIONAL': 'https://docs.google.com/forms/d/e/1FAIpQLSe3SYwwKbmhW8coOjZJRwFUivSx11bw3DkLOJPrtjCIQ2cdSA/viewform',
-  'ATIVIDADE ESPORTES DE AVENTURA': 'https://docs.google.com/forms/d/e/1FAIpQLSekKbjdBAUVqnj23RTbWEq0m7EoiJiYR5_CB89omI7BJrGb4Q/viewform'
+  'INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform?embedded=true',
+  'NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA': 'https://docs.google.com/forms/d/e/1FAIpQLSfWYt5r3CGj46fO4h-bFU7tceJ-Lk2rZgLyuZwyy22Soo0FwA/viewform?embedded=true',
+  'GINÁSTICA RÍTMICA': 'https://docs.google.com/forms/d/e/1FAIpQLSdKMxTTzetNtxk02zXbSmnwxDq0hC-6aISWnVXDoV-KsHhjog/viewform?embedded=true',
+  'ATIVIDADE FÍSICA FUNCIONAL': 'https://docs.google.com/forms/d/e/1FAIpQLSe3SYwwKbmhW8coOjZJRwFUivSx11bw3DkLOJPrtjCIQ2cdSA/viewform?embedded=true',
+  'ATIVIDADE ESPORTES DE AVENTURA': 'https://docs.google.com/forms/d/e/1FAIpQLSekKbjdBAUVqnj23RTbWEq0m7EoiJiYR5_CB89omI7BJrGb4Q/viewform?embedded=true'
 };
 
 export function FeaturedLectures() {
+  const [selectedWorkshop, setSelectedWorkshop] = useState<{ title: string; formUrl: string } | null>(null);
+
+  const handleOpenModal = (title: string) => {
+    const formUrl = workshopForms[title as keyof typeof workshopForms];
+    if (formUrl) {
+      setSelectedWorkshop({ title, formUrl });
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedWorkshop(null);
+  };
+
   return (
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -74,16 +89,12 @@ export function FeaturedLectures() {
               </CardContent>
 
               <CardFooter className="pt-4">
-                <a 
-                  href={workshopForms[lecture.title as keyof typeof workshopForms]} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-full"
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90"
+                  onClick={() => handleOpenModal(lecture.title)}
                 >
-                  <Button className="w-full bg-primary hover:bg-primary/90">
-                    Inscrever-se
-                  </Button>
-                </a>
+                  Inscrever-se
+                </Button>
               </CardFooter>
             </Card>
           ))}
@@ -97,6 +108,25 @@ export function FeaturedLectures() {
           </Link>
         </div>
       </div>
+
+      <Modal
+        isOpen={!!selectedWorkshop}
+        onClose={handleCloseModal}
+        title={selectedWorkshop?.title || ''}
+      >
+        <div className="w-full h-[600px]">
+          <iframe
+            src={selectedWorkshop?.formUrl}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            marginHeight={0}
+            marginWidth={0}
+          >
+            Carregando…
+          </iframe>
+        </div>
+      </Modal>
     </section>
   );
 }
