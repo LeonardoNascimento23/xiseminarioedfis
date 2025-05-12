@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock } from 'lucide-react';
-import Card, { CardImage, CardBody } from '../ui/Card';
+import { Card, CardImage, CardBody } from '../ui/Card';
 import { NewsArticle } from '../../types';
 import { mockNewsArticles } from '../../data/mockData';
 

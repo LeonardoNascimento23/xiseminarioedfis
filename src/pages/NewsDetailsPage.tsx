@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 import { mockNewsArticles } from '../data/mockData';
-import Card, { CardImage, CardBody } from '../components/ui/Card';
+import { Card, CardImage, CardBody } from '../components/ui/Card';
 
 const NewsDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, Search, Filter } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import Card, { CardImage, CardBody } from '../components/ui/Card';
+import { Card, CardImage, CardBody } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { mockLectures } from '../data/mockData';
