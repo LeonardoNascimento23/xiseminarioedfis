@@ -75,6 +75,30 @@ export const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
+export const CardImage = React.forwardRef<
+  HTMLImageElement,
+  React.ImgHTMLAttributes<HTMLImageElement>
+>(({ className, ...props }, ref) => (
+  <img
+    ref={ref}
+    className={cn("w-full h-48 object-cover rounded-t-lg", className)}
+    {...props}
+  />
+))
+CardImage.displayName = "CardImage"
+
+export const CardBody = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("p-6", className)}
+    {...props}
+  />
+))
+CardBody.displayName = "CardBody"
+
 // ...demais componentes...
 
 // NÃO exporte default aqui!
