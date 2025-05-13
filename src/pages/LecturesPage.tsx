@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Search, Filter, Users } from 'lucide-react';
+import { Calendar, Clock, MapPin, Search, Filter, Users, X } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { Card, CardImage, CardBody, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -8,10 +8,19 @@ import { mockLectures } from '../data/mockData';
 import { Lecture } from '../types';
 import { Badge } from "../components/ui/badge";
 
+const workshopForms = {
+  'OFICINA INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform?embedded=true',
+  'OFICINA NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA': 'https://docs.google.com/forms/d/e/1FAIpQLSfWYt5r3CGj46fO4h-bFU7tceJ-Lk2rZgLyuZwyy22Soo0FwA/viewform?embedded=true',
+  'OFICINA GINÁSTICA RÍTMICA': 'https://docs.google.com/forms/d/e/1FAIpQLSdKMxTTzetNtxk02zXbSmnwxDq0hC-6aISWnVXDoV-KsHhjog/viewform?embedded=true',
+  'OFICINA ATIVIDADE FÍSICA FUNCIONAL': 'https://docs.google.com/forms/d/e/1FAIpQLSe3SYwwKbmhW8coOjZJRwFUivSx11bw3DkLOJPrtjCIQ2cdSA/viewform?embedded=true',
+  'OFICINA ESPORTES DE AVENTURA': 'https://docs.google.com/forms/d/e/1FAIpQLSekKbjdBAUVqnj23RTbWEq0m7EoiJiYR5_CB89omI7BJrGb4Q/viewform?embedded=true'
+};
+
 const LecturesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedWorkshop, setSelectedWorkshop] = useState<{ title: string; formUrl: string } | null>(null);
 
   // Get unique dates for filtering
   const uniqueDates = Array.from(new Set(mockLectures.map(lecture => lecture.date)));
@@ -27,13 +36,24 @@ const LecturesPage: React.FC = () => {
     return matchesSearch && matchesDate;
   });
 
+  const handleOpenModal = (title: string) => {
+    const formUrl = workshopForms[title as keyof typeof workshopForms];
+    if (formUrl) {
+      setSelectedWorkshop({ title, formUrl });
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedWorkshop(null);
+  };
+
   return (
     <Layout>
       <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Palestras e Workshops</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">Oficinas</h1>
           <p className="text-gray-100 text-lg max-w-3xl mx-auto">
-            Explore todas as palestras e workshops disponíveis no nosso seminário e inscreva-se para participar.
+            Explore todas as oficinas disponíveis no nosso seminário e inscreva-se para participar.
           </p>
         </div>
       </div>
@@ -48,7 +68,7 @@ const LecturesPage: React.FC = () => {
               <input
                 type="text"
                 className="block w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
-                placeholder="Buscar palestras, temas ou palestrantes..."
+                placeholder="Buscar oficinas, temas ou instrutores..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -138,7 +158,10 @@ const LecturesPage: React.FC = () => {
                 </CardContent>
 
                 <CardFooter className="pt-4">
-                  <Button className="w-full bg-primary hover:bg-primary/90">
+                  <Button 
+                    className="w-full bg-primary hover:bg-primary/90"
+                    onClick={() => handleOpenModal(lecture.title)}
+                  >
                     Inscrever-se
                   </Button>
                 </CardFooter>
@@ -152,6 +175,37 @@ const LecturesPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {selectedWorkshop && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full relative">
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <X size={24} />
+            </button>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">{selectedWorkshop.title}</h3>
+            <div className="w-full h-[600px]">
+              <iframe
+                src={selectedWorkshop.formUrl}
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                marginHeight={0}
+                marginWidth={0}
+                className="rounded-lg"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"
+                loading="lazy"
+                title={`Formulário de inscrição - ${selectedWorkshop.title}`}
+                referrerPolicy="no-referrer"
+              >
+                Carregando…
+              </iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };

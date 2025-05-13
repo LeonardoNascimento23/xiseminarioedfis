@@ -1,4 +1,4 @@
-import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, X } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Lecture } from '../../types';
@@ -9,11 +9,11 @@ import { Modal } from '../ui/Modal';
 import { useState } from 'react';
 
 const workshopForms = {
-  'INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform?embedded=true',
-  'NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA': 'https://docs.google.com/forms/d/e/1FAIpQLSfWYt5r3CGj46fO4h-bFU7tceJ-Lk2rZgLyuZwyy22Soo0FwA/viewform?embedded=true',
-  'GINÁSTICA RÍTMICA': 'https://docs.google.com/forms/d/e/1FAIpQLSdKMxTTzetNtxk02zXbSmnwxDq0hC-6aISWnVXDoV-KsHhjog/viewform?embedded=true',
-  'ATIVIDADE FÍSICA FUNCIONAL': 'https://docs.google.com/forms/d/e/1FAIpQLSe3SYwwKbmhW8coOjZJRwFUivSx11bw3DkLOJPrtjCIQ2cdSA/viewform?embedded=true',
-  'ATIVIDADE ESPORTES DE AVENTURA': 'https://docs.google.com/forms/d/e/1FAIpQLSekKbjdBAUVqnj23RTbWEq0m7EoiJiYR5_CB89omI7BJrGb4Q/viewform?embedded=true'
+  'OFICINA INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform?embedded=true',
+  'OFICINA NUTRIÇÃO ESPORTIVA APLICADA À HIPERTROFIA E REDUÇÃO DE MASSA GORDA': 'https://docs.google.com/forms/d/e/1FAIpQLSfWYt5r3CGj46fO4h-bFU7tceJ-Lk2rZgLyuZwyy22Soo0FwA/viewform?embedded=true',
+  'OFICINA GINÁSTICA RÍTMICA': 'https://docs.google.com/forms/d/e/1FAIpQLSdKMxTTzetNtxk02zXbSmnwxDq0hC-6aISWnVXDoV-KsHhjog/viewform?embedded=true',
+  'OFICINA ATIVIDADE FÍSICA FUNCIONAL': 'https://docs.google.com/forms/d/e/1FAIpQLSe3SYwwKbmhW8coOjZJRwFUivSx11bw3DkLOJPrtjCIQ2cdSA/viewform?embedded=true',
+  'OFICINA ESPORTES DE AVENTURA': 'https://docs.google.com/forms/d/e/1FAIpQLSekKbjdBAUVqnj23RTbWEq0m7EoiJiYR5_CB89omI7BJrGb4Q/viewform?embedded=true'
 };
 
 export function FeaturedLectures() {
@@ -43,22 +43,8 @@ export function FeaturedLectures() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {mockLectures.map((lecture: Lecture) => (
             <Card key={lecture.id} className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-              <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
-                <img
-                  src={lecture.imageUrl}
-                  alt={lecture.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <Badge className="absolute top-4 right-4 bg-primary/90 text-white">
-                  Oficina
-                </Badge>
-              </div>
-              
               <CardHeader>
-                <CardTitle className="text-xl font-bold text-gray-900 line-clamp-2">
-                  {lecture.title}
-                </CardTitle>
+                <CardTitle className="text-xl font-bold text-gray-900">{lecture.title}</CardTitle>
                 <CardDescription className="text-gray-600">
                   {lecture.speaker}
                 </CardDescription>
@@ -109,24 +95,36 @@ export function FeaturedLectures() {
         </div>
       </div>
 
-      <Modal
-        isOpen={!!selectedWorkshop}
-        onClose={handleCloseModal}
-        title={selectedWorkshop?.title || ''}
-      >
-        <div className="w-full h-[600px]">
-          <iframe
-            src={selectedWorkshop?.formUrl}
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            marginHeight={0}
-            marginWidth={0}
-          >
-            Carregando…
-          </iframe>
+      {selectedWorkshop && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full relative">
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <X size={24} />
+            </button>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">{selectedWorkshop.title}</h3>
+            <div className="w-full h-[600px]">
+              <iframe
+                src={selectedWorkshop.formUrl}
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                marginHeight={0}
+                marginWidth={0}
+                className="rounded-lg"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"
+                loading="lazy"
+                title={`Formulário de inscrição - ${selectedWorkshop.title}`}
+                referrerPolicy="no-referrer"
+              >
+                Carregando…
+              </iframe>
+            </div>
+          </div>
         </div>
-      </Modal>
+      )}
     </section>
   );
 }

@@ -6,112 +6,111 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary-dark text-white">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About Section */}
-          <div className="col-span-1 md:col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-yellow-100">Seminário de Educação Física</h3>
-            <p className="text-gray-300 text-sm mb-4">
-              O maior evento acadêmico na área de Educação Física, reunindo profissionais e estudantes para compartilhar conhecimentos e experiências.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-yellow-100 transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-yellow-100 transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-yellow-100 transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-yellow-100 transition-colors">
-                <Linkedin size={20} />
-              </a>
+    <footer className="bg-primary text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+          {/* Coluna de Contato */}
+          <div className="space-y-4 text-center">
+            <h3 className="text-lg font-semibold text-white mb-4">Contato</h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-center space-x-3">
+                <Phone className="h-5 w-5 text-white" />
+                <span>(11) 99999-9999</span>
+              </div>
+              <div className="flex items-center justify-center space-x-3">
+                <Mail className="h-5 w-5 text-white" />
+                <span>contato@evento.com</span>
+              </div>
+              <div className="flex items-center justify-center space-x-3">
+                <MapPin className="h-5 w-5 text-white" />
+                <span>São Paulo, SP</span>
+              </div>
             </div>
           </div>
 
-          {/* Links Section */}
-          <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-yellow-100">Links Rápidos</h3>
+          {/* Coluna de Links Rápidos */}
+          <div className="space-y-4 text-center">
+            <h3 className="text-lg font-semibold text-white mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Página Inicial
+                <Link to="/" className="hover:text-gray-200 transition-colors">
+                  Início
                 </Link>
               </li>
               <li>
-                <Link to="/palestras" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Palestras
+                <Link to="/oficinas" className="hover:text-gray-200 transition-colors">
+                  Oficinas
                 </Link>
               </li>
               <li>
-                <Link to="/noticias" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Notícias
-                </Link>
-              </li>
-              <li>
-                <Link to="/programacao" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
+                <Link to="/programacao" className="hover:text-gray-200 transition-colors">
                   Programação
                 </Link>
               </li>
               <li>
-                <Link to="/sobre" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Sobre o Evento
+                <Link to="/noticias" className="hover:text-gray-200 transition-colors">
+                  Notícias
+                </Link>
+              </li>
+              <li>
+                <Link to="/galeria" className="hover:text-gray-200 transition-colors">
+                  Galeria
+                </Link>
+              </li>
+              <li>
+                <Link to="/inscricao" className="hover:text-gray-200 transition-colors">
+                  Inscrição
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Information Section */}
-          <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-yellow-100">Informações</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/faq" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Perguntas Frequentes
-                </Link>
-              </li>
-              <li>
-                <Link to="/termos" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Termos de Uso
-                </Link>
-              </li>
-              <li>
-                <Link to="/privacidade" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Política de Privacidade
-                </Link>
-              </li>
-              <li>
-                <Link to="/contato" className="text-gray-300 hover:text-yellow-100 transition-colors text-sm">
-                  Contato
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Section */}
-          <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-yellow-100">Contato</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <MapPin className="text-gray-300 mr-2 h-5 w-5 mt-0.5" />
-                <span className="text-gray-300 text-sm">Campus Universitário, Av. Principal, 1000 - São Paulo, SP</span>
-              </li>
-              <li className="flex items-center">
-                <Phone className="text-gray-300 mr-2 h-5 w-5" />
-                <span className="text-gray-300 text-sm">(11) 5555-1234</span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="text-gray-300 mr-2 h-5 w-5" />
-                <span className="text-gray-300 text-sm">contato@seminarioef.com.br</span>
-              </li>
-            </ul>
+          {/* Coluna de Redes Sociais */}
+          <div className="space-y-4 text-center">
+            <h3 className="text-lg font-semibold text-white mb-4">Redes Sociais</h3>
+            <div className="flex justify-center space-x-6">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-200 transition-colors"
+              >
+                <Facebook className="h-6 w-6" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-200 transition-colors"
+              >
+                <Instagram className="h-6 w-6" />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-200 transition-colors"
+              >
+                <Linkedin className="h-6 w-6" />
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-primary text-center text-sm text-gray-300">
-          <p>© {currentYear} Seminário de Educação Física. Todos os direitos reservados.</p>
+        <div className="mt-8 pt-8 border-t border-white/20 text-center">
+          <p>&copy; {currentYear} XI Seminário de Práticas de Ensino, Pesquisa e Extensão em Educação Física
+. Todos os direitos reservados.</p>
+          <p className="mt-2 text-sm text-white/80">
+            Desenvolvido por{' '}
+            <a 
+              href="https://linktr.ee/Leonardo.Vital?utm_source=linktree_profile_share&ltsid=15b124fb-4c41-46b0-9fa2-60d94cd0be79" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Leonardo Nascimento
+            </a>
+          </p>
         </div>
       </div>
     </footer>

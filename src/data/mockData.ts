@@ -216,7 +216,7 @@ export const mockNewsArticles: NewsArticle[] = [
     title: 'Inscrições Abertas para o XI Seminário',
     content: `O XI Seminário de Práticas de Ensino, Pesquisa e Extensão em Educação Física está com inscrições abertas! Este ano, o evento promete ser ainda mais especial, trazendo palestrantes renomados e discussões fundamentais para a área.
 
-    O seminário acontecerá nos dias 10 e 11 de junho de 2025, no Campus Universitário da UFGD, e contará com uma programação diversificada que inclui palestras, workshops, apresentações de trabalhos e atividades culturais.
+    O seminário acontecerá nos dias 10 e 11 de junho de 2025, no Campus Universitário da UFGD, e contará com uma programação diversificada que inclui oficinas, apresentações de trabalhos e atividades culturais.
 
     Entre os destaques da programação, teremos discussões sobre metodologias ativas no ensino da Educação Física, inclusão e adaptação de atividades físicas, e as últimas tendências em pesquisa na área.
 
@@ -237,21 +237,20 @@ export const mockNewsArticles: NewsArticle[] = [
     Este ano, preparamos uma programação especial que abrange diferentes aspectos da Educação Física, desde práticas pedagógicas inovadoras até as mais recentes pesquisas na área.
 
     Destaques da Programação:
-    - Palestras com especialistas renomados
-    - Workshops práticos e interativos
-    - Sessões de apresentação de trabalhos
-    - Atividades culturais e artísticas
-    - Momentos de networking e troca de experiências
+    - Oficinas com especialistas renomados
+    - Apresentações de trabalhos científicos
+    - Atividades culturais e networking
+    - Certificado de participação
 
     Todas as atividades foram cuidadosamente planejadas para proporcionar uma experiência enriquecedora aos participantes, combinando teoria e prática.
 
     Confira a programação completa na seção "Programação" do nosso site e planeje sua participação!`,
-    summary: 'Confira a programação completa do evento, incluindo palestras, workshops e apresentações culturais.',
+    summary: 'Confira a programação completa do evento, incluindo oficinas e apresentações culturais.',
     date: '2025-05-20',
     author: 'Coordenação do Evento',
     category: 'Programação',
     imageUrl: 'https://images.pexels.com/photos/3755761/pexels-photo-3755761.jpeg',
-    tags: ['programação', 'palestras', 'workshops', 'atividades'],
+    tags: ['programação', 'oficinas', 'atividades'],
     relatedArticles: ['1', '3']
   },
   {
