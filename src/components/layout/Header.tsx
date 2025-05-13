@@ -46,7 +46,7 @@ const Header: React.FC = () => {
               <Link to="/galeria" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Fotos
               </Link>
-              <Link to="/comissao" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
+              <Link to="/sobre" className="text-primary hover:text-primary-dark px-3 py-2 text-sm font-medium">
                 Sobre
               </Link>
             </nav>
@@ -122,6 +122,12 @@ const Header: React.FC = () => {
             <Link to="/noticias" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
               Notícias
             </Link>
+            <Link to="/galeria" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
+              Fotos
+            </Link>
+            <Link to="/sobre" className="block pl-3 pr-4 py-2 text-base font-medium text-primary hover:bg-gray-50 hover:text-primary-dark">
+              Sobre
+            </Link>
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="px-3 space-y-2">
@@ -139,10 +145,10 @@ const Header: React.FC = () => {
               ) : (
                 <>
                   <Link to="/login" className="block w-full">
-                    <Button variant="outline" size="sm" isFullWidth className="text-primary border-primary hover:bg-gray-50">Entrar</Button>
+                    <Button variant="outline" size="sm" className="text-primary border-primary hover:bg-gray-50">Entrar</Button>
                   </Link>
                   <Link to="/registrar" className="block w-full">
-                    <Button variant="secondary" size="sm" isFullWidth>Registrar</Button>
+                    <Button variant="secondary" size="sm">Registrar</Button>
                   </Link>
                 </>
               )}

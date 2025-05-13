@@ -14,7 +14,6 @@ import NewsEditor from './pages/admin/NewsEditor';
 import GalleryEditor from './pages/admin/GalleryEditor';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import RegistrationPage from './pages/RegistrationPage';
-import CommitteePage from './pages/CommitteePage';
 import GalleryPage from './pages/GalleryPage';
 import { AuthProvider } from './context/AuthContext';
 
@@ -38,7 +37,6 @@ function App() {
           <Route path="/admin/news" element={<NewsEditor />} />
           <Route path="/admin/gallery" element={<GalleryEditor />} />
           <Route path="/inscricao" element={<RegistrationPage />} />
-          <Route path="/comissao" element={<CommitteePage />} />
           <Route path="/galeria" element={<GalleryPage />} />
         </Routes>
       </Router>
