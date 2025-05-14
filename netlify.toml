@@ -6,53 +6,24 @@
 [build.environment]
   NODE_VERSION = "18"
 
-[[redirects]]
-  from = "/admin/*"
-  to = "/admin/index.html"
-  status = 200
+[functions]
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Origin = "*"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[dev]
-  command = "npm run dev"
-  port = 8888
-  targetPort = 5173
-  publish = "dist"
-  autoLaunch = true
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-[functions.environment]
-  SUPABASE_URL = ""
-  SUPABASE_ANON_KEY = ""
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https: wss:;"
-    Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
-    Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Content-Type = "application/javascript"
-
-[[headers]]
-  for = "/*.mjs"
-  [headers.values]
-    Content-Type = "application/javascript"
-
 # Configuração do Git Gateway
 [[plugins]]
-  package = "@netlify/plugin-git-gateway" 
+  package = "@netlify/plugin-git-gateway"
+
+[plugins.git-gateway]
+  enabled = true 
