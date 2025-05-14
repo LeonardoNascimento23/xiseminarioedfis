@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export interface News {
@@ -228,17 +228,14 @@ export function useLectures() {
   };
 }
 
-export function useGallery() {
+export const useGallery = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
-
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('gallery')
         .select('*')
@@ -247,80 +244,130 @@ export function useGallery() {
       if (error) throw error;
       setImages(data || []);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Erro ao carregar imagens');
+      console.error('Erro ao buscar imagens:', error);
+      setError('Erro ao carregar imagens');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const uploadImage = async (url: string, description: string, category: string) => {
+  useEffect(() => {
+    fetchImages();
+  }, [fetchImages]);
+
+  const uploadImage = async (file: File, path: string, metadata: { description: string; category: string }) => {
     try {
-      setLoading(true);
-      setError(null);
-
-      const { data, error: insertError } = await supabase
-        .from('gallery')
-        .insert({
-          url,
-          description,
-          category
-        })
-        .select('*');
-
-      if (insertError) {
-        throw new Error('Erro ao salvar os dados da imagem');
+      // Verificar se o arquivo é uma imagem
+      if (!file.type.startsWith('image/')) {
+        throw new Error('O arquivo deve ser uma imagem');
       }
 
+      // Verificar tamanho do arquivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('O arquivo deve ter no máximo 5MB');
+      }
+
+      // Gerar nome único para o arquivo
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${path}/${fileName}`;
+
+      console.log('Iniciando upload:', {
+        filePath,
+        fileType: file.type,
+        fileSize: file.size
+      });
+
+      // Upload do arquivo
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type
+        });
+
+      if (uploadError) {
+        console.error('Erro detalhado no upload:', uploadError);
+        throw new Error(`Erro no upload: ${uploadError.message}`);
+      }
+
+      console.log('Upload concluído:', uploadData);
+
+      // Obter URL pública
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(filePath);
+
+      console.log('URL pública gerada:', publicUrl);
+
+      // Salvar metadados
+      const { data: insertData, error: insertError } = await supabase
+        .from('gallery')
+        .insert([
+          {
+            url: publicUrl,
+            description: metadata.description,
+            category: metadata.category,
+            file_path: filePath
+          }
+        ])
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Erro ao salvar metadados:', insertError);
+        // Tentar remover o arquivo do storage se falhar ao salvar metadados
+        await supabase.storage
+          .from('images')
+          .remove([filePath]);
+        throw new Error(`Erro ao salvar metadados: ${insertError.message}`);
+      }
+
+      console.log('Metadados salvos:', insertData);
+
+      // Atualizar lista
       await fetchImages();
-      return data[0];
+      return insertData;
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Erro desconhecido');
+      console.error('Erro completo no processo:', error);
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const deleteImage = async (id: string) => {
     try {
-      setLoading(true);
-      setError(null);
-
-      // Primeiro, obtém a URL da imagem
+      // Buscar informações da imagem
       const { data: image, error: fetchError } = await supabase
         .from('gallery')
-        .select('url')
+        .select('file_path')
         .eq('id', id)
         .single();
 
       if (fetchError) throw fetchError;
 
-      // Extrai o caminho do arquivo da URL
-      const filePath = image.url.split('/').pop();
-      if (!filePath) throw new Error('URL da imagem inválida');
+      // Deletar arquivo do storage
+      if (image?.file_path) {
+        const { error: deleteError } = await supabase.storage
+          .from('images')
+          .remove([image.file_path]);
 
-      // Remove o arquivo do storage
-      const { error: deleteStorageError } = await supabase.storage
-        .from('images')
-        .remove([`gallery/${filePath}`]);
-
-      if (deleteStorageError) {
-        console.error('Erro ao deletar do storage:', deleteStorageError);
+        if (deleteError) throw deleteError;
       }
 
-      // Remove o registro da tabela
+      // Deletar registro do banco
       const { error: deleteError } = await supabase
         .from('gallery')
         .delete()
         .eq('id', id);
 
       if (deleteError) throw deleteError;
+
+      // Atualizar lista
       await fetchImages();
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Erro desconhecido');
-      throw error;
-    } finally {
-      setLoading(false);
+      console.error('Erro ao deletar:', error);
+      throw new Error('Erro ao deletar imagem');
     }
   };
 
@@ -329,10 +376,9 @@ export function useGallery() {
     loading,
     error,
     uploadImage,
-    deleteImage,
-    refreshImages: fetchImages
+    deleteImage
   };
-}
+};
 
 export function useSpeakers() {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
@@ -595,9 +641,14 @@ export const useSupabase = () => {
         throw new Error('O arquivo deve ser uma imagem');
       }
 
+      // Verificar tamanho do arquivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('O arquivo deve ter no máximo 5MB');
+      }
+
       // Gerar nome único para o arquivo
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `${path}/${fileName}`;
 
       // Upload do arquivo
@@ -605,12 +656,13 @@ export const useSupabase = () => {
         .from('images')
         .upload(filePath, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          contentType: file.type
         });
 
       if (uploadError) {
         console.error('Erro no upload:', uploadError);
-        throw new Error('Erro ao fazer upload da imagem');
+        throw new Error(uploadError.message || 'Erro ao fazer upload da imagem');
       }
 
       // Obter URL pública

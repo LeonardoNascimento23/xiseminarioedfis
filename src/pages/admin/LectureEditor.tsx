@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout/Layout';
 import { supabase } from '../../lib/supabase';
-import Button from '../../components/ui/Button';
+import { Button } from '../../components/ui/Button';
 import { Plus, Save, Trash2 } from 'lucide-react';
 import SpeakerSelector from '../../components/admin/SpeakerSelector';
 import { Speaker } from '../../hooks/useSupabase';

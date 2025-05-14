@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LecturesPage from './pages/LecturesPage';
 import LectureDetailsPage from './pages/LectureDetailsPage';
@@ -15,31 +15,26 @@ import GalleryEditor from './pages/admin/GalleryEditor';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import RegistrationPage from './pages/RegistrationPage';
 import GalleryPage from './pages/GalleryPage';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from '@/context/AuthContext';
+import { NoticiasPage } from './pages/NoticiasPage';
+import { NoticiaDetailPage } from './pages/NoticiaDetailPage';
+import { Router } from './Router';
+
+// Configurar flags futuras do React Router
+const router = {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true
+  }
+};
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/oficinas" element={<LecturesPage />} />
-          <Route path="/oficinas/:id" element={<LectureDetailsPage />} />
-          <Route path="/noticias" element={<NewsPage />} />
-          <Route path="/noticias/:id" element={<NewsDetailsPage />} />
-          <Route path="/programacao" element={<SchedulePage />} />
-          <Route path="/sobre" element={<AboutPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/registrar" element={<RegisterPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/lectures" element={<LectureEditor />} />
-          <Route path="/admin/news" element={<NewsEditor />} />
-          <Route path="/admin/gallery" element={<GalleryEditor />} />
-          <Route path="/inscricao" element={<RegistrationPage />} />
-          <Route path="/galeria" element={<GalleryPage />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <BrowserRouter {...router}>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

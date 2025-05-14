@@ -1,40 +1,70 @@
 import React from 'react';
+import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  className,
+}) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex min-h-screen items-center justify-center p-4 text-center">
-        <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose} />
-
-        <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-          <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">{title}</h3>
-              <button
-                type="button"
-                className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
-                onClick={onClose}
-              >
-                <span className="sr-only">Fechar</span>
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            <div className="mt-2">
-              {children}
-            </div>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div
+        className="fixed inset-0 bg-black/50 transition-opacity"
+        onClick={onClose}
+      />
+      <div
+        className={cn(
+          'relative z-50 w-full max-w-lg rounded-lg bg-white p-6 shadow-lg',
+          className
+        )}
+      >
+        <div className="flex items-center justify-between">
+          {title && (
+            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+          )}
+          <button
+            onClick={onClose}
+            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
+        <div className="mt-4">{children}</div>
       </div>
     </div>
   );
-} 
+};
+
+interface ModalContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const ModalContent: React.FC<ModalContentProps> = ({
+  className,
+  ...props
+}) => (
+  <div className={cn('mt-4', className)} {...props} />
+);
+
+interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const ModalFooter: React.FC<ModalFooterProps> = ({
+  className,
+  ...props
+}) => (
+  <div
+    className={cn('mt-6 flex justify-end space-x-3', className)}
+    {...props}
+  />
+); 

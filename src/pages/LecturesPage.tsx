@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { mockLectures } from '../data/mockData';
 import { Lecture } from '../types';
 import { Badge } from "../components/ui/badge";
+import { Breadcrumb } from '../components/ui/Breadcrumb';
 
 const workshopForms = {
   'OFICINA INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform?embedded=true',
@@ -51,6 +52,10 @@ const LecturesPage: React.FC = () => {
     <Layout>
       <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumb
+            items={[{ label: 'Oficinas' }]}
+            className="mb-6"
+          />
           <h1 className="text-4xl font-bold text-white mb-4">Oficinas</h1>
           <p className="text-gray-100 text-lg max-w-3xl mx-auto">
             Explore todas as oficinas disponíveis no nosso seminário e inscreva-se para participar.

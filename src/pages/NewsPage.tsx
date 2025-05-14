@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, Search, Filter } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { Card, CardImage, CardBody } from '../components/ui/Card';
-import Button from '../components/ui/Button';
+import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { useNews } from '../hooks/useSupabase';
 
@@ -130,7 +130,7 @@ const NewsPage: React.FC = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-500">Por {article.author}</span>
                     <Link to={`/noticias/${article.id}`}>
-                      <Button variant="default" size="sm">
+                      <Button variant="primary" size="sm">
                         Leia mais
                       </Button>
                     </Link>

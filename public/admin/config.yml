@@ -16,41 +16,72 @@ public_folder: "/images/uploads"
 collections:
   - name: "noticias"
     label: "Notícias"
-    folder: "src/content/noticias"
+    folder: "content/noticias"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: "frontmatter"
+    extension: "md"
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Data", name: "date", widget: "datetime"}
-      - {label: "Autor", name: "author", widget: "string"}
-      - {label: "Categoria", name: "category", widget: "string"}
-      - {label: "Imagem", name: "image", widget: "image"}
-      - {label: "Resumo", name: "summary", widget: "text"}
-      - {label: "Conteúdo", name: "body", widget: "markdown"}
-      - {label: "Tags", name: "tags", widget: "list"}
-      - {label: "Publicado", name: "published", widget: "boolean"}
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Data", name: "date", widget: "datetime" }
+      - { label: "Autor", name: "author", widget: "string" }
+      - { label: "Categoria", name: "category", widget: "select", options: ["Geral", "Eventos", "Oficinas"] }
+      - { label: "Imagem de Capa", name: "thumbnail", widget: "image", required: false }
+      - { label: "Resumo", name: "summary", widget: "text" }
+      - { label: "Conteúdo", name: "body", widget: "markdown" }
+      - { label: "Publicado", name: "published", widget: "boolean", default: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
 
-  - name: "palestras"
-    label: "Palestras"
-    folder: "src/content/palestras"
+  - name: "oficinas"
+    label: "Oficinas"
+    folder: "content/oficinas"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: "frontmatter"
+    extension: "md"
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Data", name: "date", widget: "datetime"}
-      - {label: "Palestrante", name: "speaker", widget: "string"}
-      - {label: "Descrição", name: "description", widget: "markdown"}
-      - {label: "Duração", name: "duration", widget: "number"}
-      - {label: "Imagem", name: "image", widget: "image"}
-      - {label: "Vagas", name: "max_participants", widget: "number"}
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Data", name: "date", widget: "datetime" }
+      - { label: "Horário", name: "time", widget: "string" }
+      - { label: "Local", name: "location", widget: "string" }
+      - { label: "Palestrante", name: "speaker", widget: "string" }
+      - { label: "Biografia do Palestrante", name: "speaker_bio", widget: "text" }
+      - { label: "Descrição", name: "description", widget: "markdown" }
+      - { label: "Imagem", name: "image", widget: "image", required: false }
+      - { label: "Vagas", name: "max_participants", widget: "number" }
+      - { label: "Pontos de Aprendizado", name: "learning_points", widget: "list" }
+      - { label: "Publicado", name: "published", widget: "boolean", default: false }
 
   - name: "galeria"
     label: "Galeria"
-    folder: "src/content/galeria"
+    folder: "content/galeria"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: "frontmatter"
+    extension: "md"
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Descrição", name: "description", widget: "text"}
-      - {label: "Categoria", name: "category", widget: "string"}
-      - {label: "Imagem", name: "image", widget: "image"} 
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Descrição", name: "description", widget: "text" }
+      - { label: "Categoria", name: "category", widget: "select", options: ["Eventos", "Oficinas", "Exposições", "Outros"] }
+      - { label: "Imagem", name: "image", widget: "image" }
+      - { label: "Data", name: "date", widget: "datetime" }
+      - { label: "Publicado", name: "published", widget: "boolean", default: false }
+
+  - name: "palestrantes"
+    label: "Palestrantes"
+    folder: "content/palestrantes"
+    create: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    extension: "md"
+    fields:
+      - { label: "Nome", name: "name", widget: "string" }
+      - { label: "Biografia", name: "bio", widget: "markdown" }
+      - { label: "Foto", name: "image", widget: "image", required: false }
+      - { label: "Email", name: "email", widget: "string" }
+      - { label: "Website", name: "website", widget: "string", required: false }
+      - { label: "Redes Sociais", name: "social", widget: "object", fields: [
+          { label: "Twitter", name: "twitter", widget: "string", required: false },
+          { label: "LinkedIn", name: "linkedin", widget: "string", required: false },
+          { label: "Instagram", name: "instagram", widget: "string", required: false }
+        ]} 

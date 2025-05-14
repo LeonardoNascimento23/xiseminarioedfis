@@ -1,0 +1,23 @@
+{
+  "bucket": "images",
+  "policies": [
+    {
+      "name": "Public Access",
+      "definition": {
+        "allow": {
+          "select": true,
+          "insert": true,
+          "update": true,
+          "delete": true
+        }
+      }
+    }
+  ],
+  "allowed_mime_types": [
+    "image/jpeg",
+    "image/png",
+    "image/gif"
+  ],
+  "max_file_size": 10485760,
+  "cache_control": "3600"
+} 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../components/layout/Layout';
 import { supabase } from '../../lib/supabase';
-import Button from '../../components/ui/Button';
+import { Button } from '../../components/ui/Button';
 import { Save, Eye } from 'lucide-react';
 
 interface Page {

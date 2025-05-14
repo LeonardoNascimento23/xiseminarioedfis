@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Speaker } from '../../hooks/useSupabase';
 import { Plus, X } from 'lucide-react';
-import Button from '../ui/Button';
+import { Button } from '../ui/Button';
 
 interface SpeakerSelectorProps {
   selectedSpeakers: Speaker[];

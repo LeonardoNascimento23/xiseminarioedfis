@@ -1,32 +1,76 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout/Layout';
-import Button from '../../components/ui/Button';
+import { Button } from '../../components/ui/Button';
 import { Plus, Save, Trash2, Eye } from 'lucide-react';
 import { useNews, News } from '../../hooks/useSupabase';
 import NewsPreview from '../../components/admin/NewsPreview';
+import { useAuth } from '../../context/AuthContext';
 
 const NewsEditor: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const { news, loading, error, createNews, updateNews, deleteNews } = useNews();
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
   const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSave = async () => {
-    if (!selectedNews) return;
-
-    setSaving(true);
     try {
-      if (selectedNews.id) {
-        await updateNews(selectedNews.id, selectedNews);
-      } else {
-        await createNews(selectedNews);
+      if (!isAuthenticated) {
+        setErrors(['Você precisa estar logado para salvar notícias']);
+        return;
       }
-      setSelectedNews(null);
-    } catch (error) {
-      console.error('Error saving news:', error);
-      alert('Erro ao salvar notícia. Por favor, tente novamente.');
-    } finally {
-      setSaving(false);
+
+      if (!selectedNews) return;
+
+      if (!selectedNews.title.trim()) {
+        setErrors(['O título é obrigatório']);
+        return;
+      }
+
+      if (!selectedNews.content.trim()) {
+        setErrors(['O conteúdo é obrigatório']);
+        return;
+      }
+
+      if (!selectedNews.summary.trim()) {
+        setErrors(['O resumo é obrigatório']);
+        return;
+      }
+
+      if (!selectedNews.author.trim()) {
+        setErrors(['O autor é obrigatório']);
+        return;
+      }
+
+      if (!selectedNews.category) {
+        setErrors(['A categoria é obrigatória']);
+        return;
+      }
+
+      if (!selectedNews.date) {
+        setErrors(['A data é obrigatória']);
+        return;
+      }
+
+      setSaving(true);
+      try {
+        if (selectedNews.id) {
+          await updateNews(selectedNews.id, selectedNews);
+        } else {
+          await createNews(selectedNews);
+        }
+        setSelectedNews(null);
+        setErrors([]);
+      } catch (error) {
+        console.error('Error saving news:', error);
+        setErrors([error instanceof Error ? error.message : 'Erro ao salvar notícia']);
+      } finally {
+        setSaving(false);
+      }
+    } catch (err) {
+      console.error('Erro ao salvar:', err);
+      setErrors([err instanceof Error ? err.message : 'Erro ao salvar notícia']);
     }
   };
 

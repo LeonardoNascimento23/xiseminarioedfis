@@ -4,6 +4,7 @@ import Layout from '../components/layout/Layout';
 import { Calendar, Clock, MapPin, User, Users, Award, X } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { mockLectures } from '../data/mockData';
+import { Breadcrumb } from '../components/ui/Breadcrumb';
 
 const workshopForms = {
   'OFICINA INTRODUÇÃO AO BEACH TENNIS': 'https://docs.google.com/forms/d/e/1FAIpQLSe6YG2wcJDUKVIutGpAIbmMyKX4BoErlQzPraq-ggx0Zmov6Q/viewform?embedded=true',
@@ -47,6 +48,13 @@ const LectureDetailsPage: React.FC = () => {
     <Layout>
       <div className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumb
+            items={[
+              { label: 'Oficinas', href: '/oficinas' },
+              { label: lecture?.title || 'Detalhes da Oficina' }
+            ]}
+            className="mb-6"
+          />
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="mb-6 md:mb-0">
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{lecture.title}</h1>

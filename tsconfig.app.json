@@ -23,7 +23,13 @@
 
     /* Type Checking */
     "allowJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"]
 }

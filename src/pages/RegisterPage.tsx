@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import Button from '../components/ui/Button';
+import { Button } from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
 
 const RegisterPage: React.FC = () => {
