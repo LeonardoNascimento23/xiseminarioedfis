@@ -7,24 +7,27 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Supabase URL e Anon Key são necessários');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-  },
-  db: {
-    schema: 'public'
-  }
-});
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Função auxiliar para verificar se o usuário está autenticado
-export const isAuthenticated = async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  return !!session;
+// Função para verificar se é admin
+export const isAdmin = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  return user?.email === 'xiseminarioedfis@gmail.com';
 };
 
-// Função auxiliar para obter o usuário atual
-export const getCurrentUser = async () => {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+// Função para enviar magic link
+export const sendMagicLink = async (email: string) => {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: window.location.origin + '/admin'
+    }
+  });
+  return { error };
+};
+
+// Função para fazer logout
+export const logout = async () => {
+  const { error } = await supabase.auth.signOut();
+  return { error };
 };

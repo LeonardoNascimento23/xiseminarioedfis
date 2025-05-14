@@ -1,23 +1,12 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { LoginPage } from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import LecturesPage from './pages/LecturesPage';
-import LectureDetailsPage from './pages/LectureDetailsPage';
 import NewsPage from './pages/NewsPage';
-import NewsDetailsPage from './pages/NewsDetailsPage';
-import SchedulePage from './pages/SchedulePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import AboutPage from './pages/AboutPage';
-import LectureEditor from './pages/admin/LectureEditor';
-import NewsEditor from './pages/admin/NewsEditor';
-import GalleryEditor from './pages/admin/GalleryEditor';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import RegistrationPage from './pages/RegistrationPage';
 import GalleryPage from './pages/GalleryPage';
 import { AuthProvider } from '@/context/AuthContext';
-import { NoticiasPage } from './pages/NoticiasPage';
-import { NoticiaDetailPage } from './pages/NoticiaDetailPage';
 import { Router } from './Router';
 
 // Configurar flags futuras do React Router
@@ -30,11 +19,42 @@ const router = {
 
 function App() {
   return (
-    <BrowserRouter {...router}>
-      <AuthProvider>
-        <Router />
-      </AuthProvider>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <HomePage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/noticias"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <NewsPage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/galeria"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <GalleryPage />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 

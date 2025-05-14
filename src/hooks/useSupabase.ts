@@ -236,12 +236,17 @@ export const useGallery = () => {
   const fetchImages = useCallback(async () => {
     try {
       setLoading(true);
+      console.log('Iniciando busca de imagens da galeria...');
       const { data, error } = await supabase
         .from('gallery')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erro ao buscar imagens:', error);
+        throw error;
+      }
+      console.log('Imagens obtidas:', data);
       setImages(data || []);
     } catch (error) {
       console.error('Erro ao buscar imagens:', error);
@@ -652,7 +657,7 @@ export const useSupabase = () => {
       const filePath = `${path}/${fileName}`;
 
       // Upload do arquivo
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('images')
         .upload(filePath, file, {
           cacheControl: '3600',

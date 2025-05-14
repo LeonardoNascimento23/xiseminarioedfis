@@ -14,6 +14,7 @@ import RegistrationPage from './pages/RegistrationPage';
 import GalleryPage from './pages/GalleryPage';
 import { NoticiasPage } from './pages/NoticiasPage';
 import { NoticiaDetailPage } from './pages/NoticiaDetailPage';
+import { TestPage } from './pages/TestPage';
 
 export function Router() {
   return (
@@ -33,6 +34,7 @@ export function Router() {
       <Route path="/admin/gallery" element={<GalleryEditor />} />
       <Route path="/inscricao" element={<RegistrationPage />} />
       <Route path="/galeria" element={<GalleryPage />} />
+      <Route path="/test" element={<TestPage />} />
     </Routes>
   );
 } 
