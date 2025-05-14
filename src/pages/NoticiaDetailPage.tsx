@@ -18,7 +18,7 @@ interface Noticia {
   tags: string[];
 }
 
-export default function NoticiaDetailPage() {
+export function NoticiaDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [noticia, setNoticia] = useState<Noticia | null>(null);
   const [loading, setLoading] = useState(true);
